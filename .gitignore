@@ -19,6 +19,7 @@ main
 output/
 manifest/output/
 *.exe
+*.bat
 tmp/
 resource/data/gen_sql
 resource/log/
@@ -27,3 +28,4 @@ resource/public/upload_file
 manifest/config/config.yaml
 GFastV3
 /manifest/config/db.yaml
+/gfv3-im-server
