@@ -1,1 +1,0 @@
-gf2.3 gen dao -p ./internal/app/chat -l "mysql:root:123456@tcp(localhost:3306)/gfast_v3_test" -t message_content,message_list,message_room,message_room_member

@@ -29,3 +29,4 @@ manifest/config/config.yaml
 GFastV3
 /manifest/config/db.yaml
 /gfv3-im-server
+/*.bat
