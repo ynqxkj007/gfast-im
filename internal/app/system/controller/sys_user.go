@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"github.com/tiger1103/gfast/v3/api/v1/system"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model"
 	"github.com/tiger1103/gfast/v3/internal/app/system/model/entity"
@@ -78,7 +79,9 @@ func (c *userController) Edit(ctx context.Context, req *system.UserEditReq) (res
 
 // ResetPwd 重置密码
 func (c *userController) ResetPwd(ctx context.Context, req *system.UserResetPwdReq) (res *system.UserResetPwdRes, err error) {
-	err = service.SysUser().ResetUserPwd(ctx, req)
+	// 演示模式不允许操作
+	err = errors.New("演示模式不允许操作")
+	//err = service.SysUser().ResetUserPwd(ctx, req)
 	return
 }
 

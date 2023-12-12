@@ -9,6 +9,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"github.com/gogf/gf/v2/crypto/gmd5"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/util/gconv"
@@ -45,6 +46,9 @@ func (c *personalController) EditPersonal(ctx context.Context, req *system.Perso
 }
 
 func (c *personalController) ResetPwdPersonal(ctx context.Context, req *system.PersonalResetPwdReq) (res *system.PersonalResetPwdRes, err error) {
-	res, err = service.Personal().ResetPwdPersonal(ctx, req)
+
+	// 演示模式不允许操作
+	err = errors.New("演示模式不允许操作")
+	//res, err = service.Personal().ResetPwdPersonal(ctx, req)
 	return
 }
