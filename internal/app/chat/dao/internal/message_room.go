@@ -26,6 +26,7 @@ type MessageRoomColumns struct {
 	CreatedAt string //
 	UpdatedAt string //
 	DeletedAt string //
+	Inform    string // 群公告
 }
 
 // messageRoomColumns holds the columns for table message_room.
@@ -36,6 +37,7 @@ var messageRoomColumns = MessageRoomColumns{
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
 	DeletedAt: "deleted_at",
+	Inform:    "inform",
 }
 
 // NewMessageRoomDao creates and returns a new DAO object for table data access.

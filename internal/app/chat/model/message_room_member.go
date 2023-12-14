@@ -22,6 +22,13 @@ func (m *MessageRoomMemberSuper) IsEmpty() bool {
 	return m == nil || m.MessageRoomMember.Id == 0
 }
 
+func (m *MessageRoomMemberSuper) Collection() (result MessageRoomMemberSuperList) {
+	if m.IsEmpty() {
+		return
+	}
+	return MessageRoomMemberSuperList{m}
+}
+
 func (m *MessageRoomMemberSuper) Delete() (i int64, err error) {
 	if m != nil && m.RoomId > 0 && m.UserId > 0 {
 		var result sql.Result
@@ -42,6 +49,24 @@ type MessageRoomMemberSuperList []*MessageRoomMemberSuper
 type MessageRoomMemberSuperListErr struct {
 	MessageRoomMemberSuperList
 	Err error
+}
+
+func NewMessageRoomMemberList() MessageRoomMemberSuperList {
+	return make(MessageRoomMemberSuperList, 0)
+}
+
+func (list *MessageRoomMemberSuperList) Find(handler ...gdb.ModelHandler) (err error) {
+	err = dao.MessageRoomMember.Ctx(context.TODO()).Handler(handler...).Scan(list)
+	return
+}
+
+func (list MessageRoomMemberSuperList) Exist(userId uint64) bool {
+	for _, item := range list {
+		if item.UserId == userId {
+			return true
+		}
+	}
+	return false
 }
 
 func (list MessageRoomMemberSuperList) Len() int {

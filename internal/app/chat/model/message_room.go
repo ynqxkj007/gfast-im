@@ -132,10 +132,7 @@ func (m *MessageRoomSuper) Update(fields ...string) (err error) {
 	if len(fields) > 0 {
 		gd = gd.Fields(fields[0])
 	}
-	_, err = gd.Data(do.MessageRoom{
-		Name:     m.Name,
-		Identify: m.Identify,
-	}).Where("id=?", m.Id).Update()
+	_, err = gd.Data(m).Where("id=?", m.Id).Update()
 	return
 }
 

@@ -104,6 +104,7 @@ func (c *chatController) WebSocketHandle(ctx context.Context, req *chat.ChatWsRe
 	userId = gconv.String(sysUserSuper.Id)
 	payload["uid"] = userId
 	payload["nickname"] = sysUserSuper.UserNickname
+	payload["avatar"] = sysUserSuper.Avatar
 	err = ChatRoom.WebSocketHandleFunc(g.RequestFromCtx(ctx).Response.Writer, g.RequestFromCtx(ctx).Request, userId, payload)
 	if err != nil {
 		g.Log().Error(ctx, err)
@@ -242,25 +243,13 @@ func (c *chatController) CreateRoom(ctx context.Context, req *chat.CreateRoomReq
 			notifyUserIds = append(notifyUserIds, chartLogic.UID(strconv.FormatUint(item, 10)))
 		}
 
-		var notifyMessage struct {
-			Id    string `json:"id"`
-			Name  string `json:"name"`
-			Users []struct {
-				Id       string `json:"id"`
-				Avatar   string `json:"avatar"`
-				Username string `json:"username"`
-			} `json:"users"`
-		}
+		var notifyMessage chartLogic.RoomNotifyMessage
 
 		notifyMessage.Id = identify
 		notifyMessage.Name = roomName
 
 		for _, item := range sysUserSuperList {
-			notifyMessage.Users = append(notifyMessage.Users, struct {
-				Id       string `json:"id"`
-				Avatar   string `json:"avatar"`
-				Username string `json:"username"`
-			}{
+			notifyMessage.Users = append(notifyMessage.Users, &chartLogic.BaseUserInfo{
 				Id:       strconv.FormatUint(item.Id, 10),
 				Avatar:   item.Avatar,
 				Username: item.UserNickname,
@@ -287,6 +276,38 @@ func (c *chatController) UpdateRoomName(ctx context.Context, req *chat.UpdateRoo
 	err = messageRoomSuper.Update("name")
 	if err != nil {
 		return
+	}
+	return
+}
+
+// 更新群公告
+func (c *chatController) UpdateRoomNotice(ctx context.Context, req *chat.UpdateRoomNoticeReq) (res *chat.UpdateRoomNoticeRes, err error) {
+	messageRoomSuper := model.NewMessageRoomSuper()
+	err = messageRoomSuper.FindByIdentify(req.Id)
+	if err != nil {
+		return
+	}
+	if messageRoomSuper.IsEmpty() {
+		err = errors.New("找不到群聊")
+	}
+
+	messageRoomSuper.Inform = req.Inform
+	err = messageRoomSuper.Update("inform")
+	if err != nil {
+		return
+	}
+
+	// 通知群成员
+	if req.Inform != "" {
+		messageRoomSuper.Collection().LoadMessageRoomMemberSuperList()
+		notifyUserIds := make([]chartLogic.UID, 0)
+		for _, item := range messageRoomSuper.MessageRoomMemberSuperList {
+			notifyUserIds = append(notifyUserIds, chartLogic.UID(strconv.FormatUint(item.UserId, 10)))
+		}
+
+		if len(notifyUserIds) > 0 {
+			ChatRoom.Hub.Broadcast(chartLogic.NewRoomInform(messageRoomSuper.Identify, notifyUserIds, "群公告："+req.Inform))
+		}
 	}
 
 	return
@@ -315,6 +336,28 @@ func (c *chatController) Quit(ctx context.Context, req *chat.QuitRoomReq) (res *
 	if messageRoomSuper.MessageRoomMemberSuperList.Len() == 1 && i > 0 {
 		messageRoomSuper.Delete()
 	}
+	// 通知群成员
+	notifyUserIds := make([]chartLogic.UID, 0)
+	for _, item := range messageRoomSuper.MessageRoomMemberSuperList {
+		if item.UserId == req.QuitUserId {
+			continue
+		}
+		notifyUserIds = append(notifyUserIds, chartLogic.UID(strconv.FormatUint(item.UserId, 10)))
+	}
+	if len(notifyUserIds) > 0 {
+		member.Collection().LoadSysUserSuper()
+		if !member.SysUserSuper.IsEmpty() {
+			var notifyMessage chartLogic.RoomNotifyMessage
+			notifyMessage.Id = messageRoomSuper.Identify
+			notifyMessage.Name = messageRoomSuper.Name
+			notifyMessage.Users = append(notifyMessage.Users, &chartLogic.BaseUserInfo{
+				Id:       strconv.FormatUint(member.UserId, 10),
+				Avatar:   member.SysUserSuper.Avatar,
+				Username: member.SysUserSuper.UserNickname,
+			})
+			ChatRoom.Hub.Broadcast(chartLogic.NewQuitRoomMessage(req.Identify, notifyUserIds, notifyMessage))
+		}
+	}
 	return
 }
 
@@ -338,7 +381,22 @@ func (c *chatController) AddGroupMember(ctx context.Context, req *chat.AddGroupM
 	}
 	if sysUserSuperList.Len() != len(req.UserIds) {
 		err = errors.New("非法的用户ID")
+		return
 	}
+
+	emptyMessageRoomMemberList := model.NewMessageRoomMemberList()
+	err = emptyMessageRoomMemberList.Find(func(m *gdb.Model) *gdb.Model {
+		return m.Where("room_id =? and user_id in (?)", messageRoomSuper.Id, req.UserIds)
+	})
+	if err != nil {
+		return
+	}
+
+	if !emptyMessageRoomMemberList.IsEmpty() {
+		err = errors.New("用户已加入请勿重复添加")
+		return
+	}
+
 	var messageRoomMemberSuperList model.MessageRoomMemberSuperList
 	for _, v := range req.UserIds {
 		messageRoomMemberSuperList = append(messageRoomMemberSuperList, &model.MessageRoomMemberSuper{
@@ -355,5 +413,32 @@ func (c *chatController) AddGroupMember(ctx context.Context, req *chat.AddGroupM
 	}
 	res = &chat.AddGroupMemberRes{}
 	res.UserList = sysUserSuperList
+
+	// 通知群成员
+	messageRoomSuper.Collection().LoadMessageRoomMemberSuperList()
+	allMessageRoomMemberSuperList := messageRoomSuper.MessageRoomMemberSuperList
+	notifyUserIds := make([]chartLogic.UID, 0)
+	for _, item := range allMessageRoomMemberSuperList {
+		notifyUserIds = append(notifyUserIds, chartLogic.UID(strconv.FormatUint(item.UserId, 10)))
+	}
+	if len(notifyUserIds) > 0 {
+		allMessageRoomMemberSuperList.LoadSysUserSuper()
+
+		var notifyMessage chartLogic.RoomNotifyMessage
+		notifyMessage.Id = messageRoomSuper.Identify
+		notifyMessage.Name = messageRoomSuper.Name
+
+		for _, item := range allMessageRoomMemberSuperList {
+			notifyMessage.Users = append(notifyMessage.Users, &chartLogic.BaseUserInfo{
+				Id:       strconv.FormatUint(item.UserId, 10),
+				Avatar:   item.SysUserSuper.Avatar,
+				Username: item.SysUserSuper.UserNickname,
+				NewJoin:  messageRoomMemberSuperList.Exist(item.UserId),
+			})
+		}
+		ChatRoom.Hub.Broadcast(chartLogic.NewJoinRoomMessage(req.Identify, notifyUserIds, notifyMessage))
+
+	}
+
 	return
 }

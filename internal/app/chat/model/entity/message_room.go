@@ -16,4 +16,5 @@ type MessageRoom struct {
 	CreatedAt *gtime.Time `json:"createdAt" ` //
 	UpdatedAt *gtime.Time `json:"updatedAt" ` //
 	DeletedAt *gtime.Time `json:"deletedAt" ` //
+	Inform    string      `json:"inform"    ` // 群公告
 }

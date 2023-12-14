@@ -18,7 +18,7 @@ var System = &User{UID: "", IsSys: 1, Payload: map[string]interface{}{"uid": "",
 
 type User struct {
 	UID            UID                    `json:"uid"`
-	EnterAt        time.Time              `json:"enterAt"`
+	EnterAt        MyCustomTime           `json:"enterAt"`
 	Addr           string                 `json:"addr"`
 	Payload        map[string]interface{} `json:"payload"`
 	IsSys          int                    `json:"isSys"` // 1 表示系统用户
@@ -36,7 +36,7 @@ func (u *User) UIDToUint64() uint64 {
 func NewUser(conn *websocket.Conn, spadger *Spadger, uid string) *User {
 	return &User{
 		UID:            UID(uid),
-		EnterAt:        time.Now(),
+		EnterAt:        MyCustomTime(time.Now()),
 		Addr:           "",
 		open:           true,
 		rwmutex:        &sync.RWMutex{},

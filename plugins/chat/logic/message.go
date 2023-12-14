@@ -9,11 +9,14 @@ import (
 
 // 消息类型
 const (
-	MsgTypeNormal    = iota // 用户消息
-	MsgTypeUserEnter        // 用户进入
-	MsgTypeUserLeave        // 用户退出
-	MsgTypeError            // 错误消息
-	MsgTypeAddRoom          // 新增群聊
+	MsgTypeNormal     = iota // 用户消息
+	MsgTypeUserEnter         // 用户进入
+	MsgTypeUserLeave         // 用户退出
+	MsgTypeError             // 错误消息
+	MsgTypeAddRoom           // 新增群聊
+	MsgTypeMemberJoin        // 群成员加入
+	MsgTypeMemberQuit        // 群成员退出
+	MsgTypeRoomInform        // 群聊通知
 )
 
 // 消息格式
@@ -66,15 +69,23 @@ type envelope struct {
 	msg []byte
 }
 
+type MyCustomTime time.Time
+
+func (t MyCustomTime) MarshalJSON() ([]byte, error) {
+	// 自定义格式，例如 "2023-12-13 12:00:00"
+	layout := "2006-01-02 15:04:05"
+	return json.Marshal(time.Time(t).Format(layout))
+}
+
 type Message struct {
-	User    *User      `json:"user"`   // 发信人
-	Type    int        `json:"type"`   // 消息类型
-	CType   int        `json:"c_type"` // 消息格式
-	Content string     `json:"content"`
-	MsgTime time.Time  `json:"msg_time"`
-	Ats     []UID      `json:"ats"`
-	Filter  filterFunc `json:"-"`
-	RoomId  string     `json:"room_id"` // 群聊房间号
+	User    *User        `json:"user"`   // 发信人
+	Type    int          `json:"type"`   // 消息类型
+	CType   int          `json:"c_type"` // 消息格式
+	Content string       `json:"content"`
+	MsgTime MyCustomTime `json:"msg_time"`
+	Ats     []UID        `json:"ats"`
+	Filter  filterFunc   `json:"-"`
+	RoomId  string       `json:"room_id"` // 群聊房间号
 }
 
 func (m *Message) AtsToUint64() (result []uint64) {
@@ -83,6 +94,27 @@ func (m *Message) AtsToUint64() (result []uint64) {
 	}
 	return
 }
+func (m *Message) GetContent() []byte {
+	return []byte(m.Content)
+}
+
+func (m *Message) Json() []byte {
+	b, _ := json.Marshal(*m)
+	return b
+}
+
+type RoomNotifyMessage struct {
+	Id    string          `json:"id"`   // 房间ID
+	Name  string          `json:"name"` // 房间名称
+	Users []*BaseUserInfo `json:"users"`
+}
+
+type BaseUserInfo struct {
+	Id       string `json:"id"`
+	Username string `json:"username"`
+	Avatar   string `json:"avatar"`
+	NewJoin  bool   `json:"new_join"`
+}
 
 func NewSysMessage(content string) *Message {
 	return &Message{
@@ -90,7 +122,7 @@ func NewSysMessage(content string) *Message {
 		Type:    MsgTypeNormal,
 		Content: content,
 		Ats:     nil,
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 	}
 }
 
@@ -100,7 +132,7 @@ func NewMessage(user *User, content string) *Message {
 		Type:    MsgTypeNormal,
 		Content: content,
 		Ats:     nil,
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 	}
 }
 
@@ -115,7 +147,7 @@ func NewMessageByLetter(user *User, letter *Letter) *Message {
 		CType:   letter.Ctype,
 		Content: letter.Content,
 		Ats:     letter.GetAts(),
-		MsgTime: mt,
+		MsgTime: MyCustomTime(mt),
 		RoomId:  letter.RoomId,
 	}
 	return message
@@ -126,7 +158,7 @@ func NewUserEnterMessage(user *User) *Message {
 		User:    user,
 		Type:    MsgTypeUserEnter,
 		Content: "",
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 	}
 }
 
@@ -135,7 +167,7 @@ func NewUserLeaveMessage(user *User) *Message {
 		User:    user,
 		Type:    MsgTypeUserLeave,
 		Content: "",
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 	}
 }
 
@@ -144,7 +176,7 @@ func NewErrorMessage(content string) *Message {
 		User:    System,
 		Type:    MsgTypeError,
 		Content: content,
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 	}
 }
 
@@ -155,17 +187,47 @@ func NewAddRoomMessage(roomId string, ids []UID, payload interface{}) *Message {
 		Type:    MsgTypeAddRoom,
 		CType:   CTypeJson,
 		Content: string(b),
-		MsgTime: utils.NewUtils().Now(),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
 		RoomId:  roomId,
 		Ats:     ids,
 	}
 }
 
-func (m *Message) GetContent() []byte {
-	return []byte(m.Content)
+func NewQuitRoomMessage(roomId string, ids []UID, payload interface{}) *Message {
+	b, _ := json.Marshal(payload)
+	return &Message{
+		User:    System,
+		Type:    MsgTypeMemberQuit,
+		CType:   CTypeJson,
+		Content: string(b),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
+		RoomId:  roomId,
+		Ats:     ids,
+	}
 }
 
-func (m *Message) Json() []byte {
-	b, _ := json.Marshal(*m)
-	return b
+func NewJoinRoomMessage(roomId string, ids []UID, payload interface{}) *Message {
+	b, _ := json.Marshal(payload)
+	return &Message{
+		User:    System,
+		Type:    MsgTypeMemberJoin,
+		CType:   CTypeJson,
+		Content: string(b),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
+		RoomId:  roomId,
+		Ats:     ids,
+	}
+}
+
+// 群聊系统消息
+func NewRoomInform(roomId string, ids []UID, content string) *Message {
+	return &Message{
+		User:    System,
+		Type:    MsgTypeRoomInform,
+		CType:   CTypeString,
+		Content: content,
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
+		RoomId:  roomId,
+		Ats:     ids,
+	}
 }

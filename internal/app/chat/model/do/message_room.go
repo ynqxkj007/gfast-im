@@ -18,4 +18,5 @@ type MessageRoom struct {
 	CreatedAt *gtime.Time //
 	UpdatedAt *gtime.Time //
 	DeletedAt *gtime.Time //
+	Inform    interface{} // 群公告
 }

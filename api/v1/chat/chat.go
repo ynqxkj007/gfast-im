@@ -93,11 +93,23 @@ type CreateRoomRes struct {
 type UpdateRoomNameReq struct {
 	g.Meta `path:"/updateRoomName" tags:"chat" method:"post" summary:"创建房间"`
 	commonApi.Author
-	Id   string `p:"id" v:"required#房间名称必须"`
+	Id   string `p:"id" v:"required#房间ID必须"`
 	Name string `p:"name" v:"required#房间名称必须"`
 }
 
 type UpdateRoomNameRes struct {
+	commonApi.EmptyRes
+}
+
+// 修改房间公告
+type UpdateRoomNoticeReq struct {
+	g.Meta `path:"/updateRoomNotice" tags:"chat" method:"post" summary:"修改房间公告"`
+	commonApi.Author
+	Id     string `p:"id" v:"required#房间ID必须"`
+	Inform string `p:"inform" v:"required#房间公告必须"`
+}
+
+type UpdateRoomNoticeRes struct {
 	commonApi.EmptyRes
 }
 

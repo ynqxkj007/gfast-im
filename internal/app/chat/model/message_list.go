@@ -120,6 +120,7 @@ func (list *MessageListSuperList) HistoryMessage(messageListReq request.MessageL
 	} else {
 		err = dao.MessageList.Ctx(ctx).
 			Where("((`from` = ? and `to` = ?) or (`from` = ? and `to` = ?))", messageListReq.FormId, messageListReq.ToId, messageListReq.ToId, messageListReq.FormId).
+			Where("room_id = ''").
 			Where("`mtype` = 0 and `msg_time` < ?", messageListReq.ToDate).
 			Order("msg_time desc").
 			Limit(messageListReq.Limit).Scan(list)
