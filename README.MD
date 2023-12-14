@@ -29,48 +29,36 @@
 
 
 ## 平台简介
-* 基于全新Go Frame 2.3+Vue3+Element Plus开发的全栈前后端分离的管理系统
+* 基于GFAST v3.2开发的站内即时通讯系统。
+* 可用于站内用户之间有即时通讯需求的场景，目前暂无移动端版本。
 * 前端采用vue-next-admin 、Vue、Element UI。
 * 本项目由<a href="http://www.qjit.cn/" target="_blank"><b>奇讯科技</b></a>团队开发。
 * 如您想购买云服务器请先领取阿里云优惠券：[点我进入](https://www.aliyun.com/minisite/goods?userCode=fcor2omk )，腾讯云优惠券：[点我领取](https://cloud.tencent.com/act/cps/redirect?redirect=1062&cps_key=20b1c3842f74986b2894e2c5fcde7ea2&from=console )
-* 目前我们基于gfast开发了：吸vo(￣▽￣)ｄ毒人员风控平台、政府数据化招商平台、档案资源普查信息系统、扶贫资产管理系统、厂房消防安全风控平台、重点项目督办平台等。
-
-## 特征
-* 高生产率：几分钟即可搭建一个后台管理系统
-* 模块化：单应用多系统的模式，将一个完整的应用拆分为多个系统，后续扩展更加便捷，增加代码复用性。
-* 插件化： 可通过插件的方式扩展系统功能
-* 认证机制：采用gtoken的用户状态认证及casbin的权限认证
-* 路由模式：得利于goframe2.0提供了规范化的路由注册方式,无需注解自动生成api文档 
-* 面向接口开发 
 
 
-## 内置功能
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-9. 登录日志：系统登录日志记录查询包含登录异常。
-10. 在线用户：当前系统中活跃用户状态监控。
-11. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-12. 代码生成：前后端代码的生成。
-13. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-14. 在线构建器：拖动表单元素生成相应的HTML代码。
-15. 文件上传,缓存标签等。
+## 即时通讯模块已实现的主要功能
 
-> 项目使用模块化与插件化的方式开发，目前正在升级的插件有：cms系统、万能模型、微信管理、工单系统、问答系统、工作流引擎...，同时也欢迎大家把写好的插件上传到商城，我们来帮您实现技术变现，获取收益！
+1.  用户之间一对一的即时通讯、用户之间多人群组的即时通讯
+2.  新建群组、退出群组、修改群组名称
+3.  添加群组新成员
+4.  消息的置顶、免打扰
+5.  群组内的用户进入、退出及公告的发布
+6.  目前支持的消息类型：文本、图片
+7.  自动保存及向用户发送离线消息
+8.  聊天记录自动保存至数据库
+9.  用户获取历史聊天记录
+10. 用户在线状态及离线状态的显示
+11. 自动断线重连
+12. 其他功能还在不断的完善中...
 
-> GFast开源以来得到了大家的很多支持，如果您愿意为GFast贡献代码或提供建议，请加微信：qixun007(备注：gfast)
+
 
 ## 演示地址
-[http://v3.g-fast.cn/sys](http://v3.g-fast.cn/sys)
+[http://ga.g-fast.cn/syscenter](http://ga.g-fast.cn/syscenter)
 账号：demo  密码：123456
 ## 配置
-项目数据库文件 `resource/data/db.sql` 创建数据库导入后修改配置 `manifest/config/config.yaml.bak` 复制改为`manifest/config/config.yaml`  
+项目数据库文件 `resource/data/gfast-v32-roomchat.sql` 创建数据库导入后修改配置 `manifest/config/config.yaml.bak` 复制改为`manifest/config/config.yaml`  
 
 其中gfToken配置
 ```yaml
@@ -87,34 +75,22 @@ gfToken:
 
 项目为前后端分离，前端地址：
 
-github地址：[https://github.com/tiger1103/gfast-ui](https://github.com/tiger1103/gfast-ui)
+github地址：[https://github.com/ynqxkj007/gfast-im-ui](https://github.com/ynqxkj007/gfast-im-ui)
 
-gitee地址：[https://gitee.com/tiger1103/gfast-ui](https://gitee.com/tiger1103/gfast-ui)
 
-## 文档地址
+
+## gfast的文档地址
 > [http://doc.g-fast.cn/docs/gfast32](http://doc.g-fast.cn/docs/gfast32)
 
-## 相关视频
+## gfast的相关视频
 [https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204](https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204)
 
 ## 演示图
 
 <table>
     <tr>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01e1blsg80hagzj.png"/></td>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01gckl91kjetl0d.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01gckl91ky1lm3d.png"/></td>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01kkmk7sc1txfvz.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01kkmkfi4syoydw.png"/></td>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01s04zq2470mx3r.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01kkmkfi4tquojj.png"/></td>
-        <td><img src="https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2022-04-19/cje01s04zq245k17ta.png"/></td>
+        <td><img src="http://v3.g-fast.cn/upload_file/2023-12-14/cxnyxz83al8hfczrai.png"/></td>
+        <td><img src="http://v3.g-fast.cn/upload_file/2023-12-14/cxnyxpfhkuxi4onmx6.png"/></td>
     </tr>
 </table>
 
