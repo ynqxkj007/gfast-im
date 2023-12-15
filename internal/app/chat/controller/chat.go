@@ -20,6 +20,7 @@ import (
 	chartLogic "github.com/tiger1103/gfast/v3/plugins/chat/logic"
 	chartServer "github.com/tiger1103/gfast/v3/plugins/chat/server"
 	"math/rand"
+	"os"
 	"strconv"
 	"time"
 )
@@ -56,16 +57,20 @@ func init() {
 
 	ChatRoom.HandleMessage(func(user *chartLogic.User, message chartLogic.Message) {
 		if message.Type == 0 {
-			messageListSuper := model.NewMessageListSuper()
-			messageListSuper.From = message.User.UIDToUint64()
-			messageListSuper.Mtype = message.Type
-			messageListSuper.Ctype = message.CType
-			messageListSuper.MsgTime = gtime.New(message.MsgTime)
-			messageListSuper.RoomId = message.RoomId
-			err := messageListSuper.Add(message.Content, message.AtsToUint64()...)
-			if err != nil {
-				g.Log().Error(context.TODO(), err)
+			// 聊天内容需记录进数据库时，请注释 "if os.Getenv("debug") == "1" {"
+			if os.Getenv("debug") == "1" {
+				messageListSuper := model.NewMessageListSuper()
+				messageListSuper.From = message.User.UIDToUint64()
+				messageListSuper.Mtype = message.Type
+				messageListSuper.Ctype = message.CType
+				messageListSuper.MsgTime = gtime.New(message.MsgTime)
+				messageListSuper.RoomId = message.RoomId
+				err := messageListSuper.Add(message.Content, message.AtsToUint64()...)
+				if err != nil {
+					g.Log().Error(context.TODO(), err)
+				}
 			}
+
 		}
 	})
 
