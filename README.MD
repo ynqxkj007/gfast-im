@@ -86,16 +86,24 @@ github地址：[https://github.com/ynqxkj007/gfast-im-ui](https://github.com/ynq
 1. 将本项目数据库中表`message_content`及`message_list`导入到gfast的数据库中。
 2. 后端文件覆盖
 	2.1 覆盖api接口文件文件：`/api/v1/chat/chat.go`
+
 	2.2 覆盖chat模块：`internal/app/chat`
+
 	2.3 覆盖router文件：`internal/router/chat.go`
+
 	2.4 覆盖chat插件模块:`plugins/chat`
 
 3. 前端文件覆盖
 	3.1 覆盖前端api接口文件：`src/api/chat`
+
 	3.2 覆盖前端组件：`src/components/chatModal` 、`src/components/chatRoom`
+
 	3.3 覆盖stores文件：`src/stores/chat.ts`
+
 	3.5 覆盖websocket文件：`src/utils/websocket`
+
 	3.6 修改导航文件：`src/layout/navBars/breadcrumb/user.vue`
+
 	加入聊天入口
 	![](http://doc.g-fast.cn/uploads/gfast32/images/m_6d8b60f63b4f2fa0637aa7bccdb8ae6a_r.png)
 	导入im组件
