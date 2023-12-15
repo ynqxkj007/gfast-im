@@ -83,7 +83,7 @@ github地址：[https://github.com/ynqxkj007/gfast-im-ui](https://github.com/ynq
 > [http://doc.g-fast.cn/docs/gfast32](http://doc.g-fast.cn/docs/gfast32)
 
 ## 如何将其单独提取到gfast项目使用
-1. 将本项目数据库中表`message_content`及`message_list`导入到gfast的数据库中。
+1. 将本项目数据库中表`message_content`、`message_list`、`message_room`、`message_room_member`导入到gfast的数据库中。
 2. 后端文件覆盖
 	2.1 覆盖api接口文件文件：`/api/v1/chat/chat.go`
 
