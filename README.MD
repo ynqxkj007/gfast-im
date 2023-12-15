@@ -82,33 +82,48 @@ github地址：[https://github.com/ynqxkj007/gfast-im-ui](https://github.com/ynq
 ## gfast的文档地址
 > [http://doc.g-fast.cn/docs/gfast32](http://doc.g-fast.cn/docs/gfast32)
 
-## gfast的相关视频
-[https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204](https://space.bilibili.com/254192571/channel/seriesdetail?sid=223204)
+## 如何将其单独提取到gfast项目使用
+1. 将本项目数据库中表`message_content`及`message_list`导入到gfast的数据库中。
+2. 后端文件覆盖
+	2.1 覆盖api接口文件文件：`/api/v1/chat/chat.go`
+
+	2.2 覆盖chat模块：`internal/app/chat`
+
+	2.3 覆盖router文件：`internal/router/chat.go`
+
+	2.4 覆盖chat插件模块:`plugins/chat`
+
+3. 前端文件覆盖
+	3.1 覆盖前端api接口文件：`src/api/chat`
+
+	3.2 覆盖前端组件：`src/components/chatModal` 、`src/components/chatRoom`
+
+	3.3 覆盖stores文件：`src/stores/chat.ts`
+
+	3.5 覆盖websocket文件：`src/utils/websocket`
+
+	3.6 修改导航文件：`src/layout/navBars/breadcrumb/user.vue`
+
+	加入聊天入口
+	![](http://doc.g-fast.cn/uploads/gfast32/images/m_6d8b60f63b4f2fa0637aa7bccdb8ae6a_r.png)
+	导入im组件
+	![](http://doc.g-fast.cn/uploads/gfast32/images/m_b412c83fabdc5a951bf0b7d6efb8218c_r.png)
+	![](http://doc.g-fast.cn/uploads/gfast32/images/m_27300997186a55d9745aa3e817bd7fd8_r.png)
+4. 除了"/src/layout/navBars/breadcrumb/user.vue",只有新增的文件，并不会覆盖您的项目中的已有文件。
+5. 以上文件覆盖完成后直接运行即可，无需安装任何依赖。
 
 ## 演示图
 
 <table>
+	<tr>
+	<td><img src="http://v3.g-fast.cn/upload_file/2023-12-14/cxnyxz83al8hfczrai.png"/></td>
+	<td><img src="http://doc.g-fast.cn/uploads/gfast32/images/m_d0c62688a85a02a9eb6d90e19305ad0e_r.png"/></td>
+	</tr>
     <tr>
-        <td><img src="http://v3.g-fast.cn/upload_file/2023-12-14/cxnyxz83al8hfczrai.png"/></td>
+        <td><img src="http://doc.g-fast.cn/uploads/gfast32/images/m_453eb26ef98002a42ab90fb3de2194cd_r.png"/></td>
         <td><img src="http://v3.g-fast.cn/upload_file/2023-12-14/cxnyxpfhkuxi4onmx6.png"/></td>
     </tr>
 </table>
-
-## 感谢(排名不分先后)
-> gf框架 [https://github.com/gogf/gf](https://github.com/gogf/gf)
->
-> vue-next-admin [https://gitee.com/lyt-top/vue-next-admin](https://gitee.com/lyt-top/vue-next-admin)
->
-> swaggo [https://github.com/swaggo/swag](https://github.com/swaggo/swag)
->
->gtoken [https://github.com/goflyfox/gtoken](https://github.com/goflyfox/gtoken)
->
->casbin [https://github.com/casbin/casbin](https://github.com/casbin/casbin)
-
-
-PHP开源工作流引擎tpflow   [https://gitee.com/ntdgg/tpflow](https://gitee.com/ntdgg/tpflow)
-
-CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](https://gitee.com/opencc/ccflow)
 
 ## 交流QQ群
 
@@ -116,7 +131,7 @@ CCflow 国内最优秀的开源流程引擎  [https://gitee.com/opencc/ccflow](h
 
 > 感谢你使用GFast,公司团队精力时间有限，因此我们不再提供免费的技术服务，目前Gfast QQ交流群有部分用户进行了捐赠，捐赠后请联系作者进vip用户群，vip群中问题将得到优先解答，同时也会根据您的需求进行分析和优先安排，vip群也会提供Gfast的其它福利。
 > 同时您也可以联系我们，雇佣我们团队为您干活，谢谢合作！
->快来加入群聊【Gfast框架交流群】(1群：865697297-已满，2群：444129379)，发现精彩内容，记得备注加群来意。
+>快来加入群聊【Gfast框架交流群】(1群：已满，2群：444129379)，发现精彩内容，记得备注加群来意。
 
 ## 免责声明：
 > 1、Gfast仅限自己学习使用，一切商业行为与Gfast无关。
