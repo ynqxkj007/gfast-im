@@ -22,8 +22,9 @@ type SignalingWsRes struct {
 type InitVideoReq struct {
 	g.Meta `path:"/initVideo" tags:"chat" method:"get" summary:"发起音视频连接"`
 	commonApi.Author
-	From string   `json:"from"`
-	To   []string `json:"to"`
+	From   string   `json:"from"`
+	To     []string `json:"to"`
+	RoomId string   `json:"roomId"`
 }
 
 type InitVideoRes struct {
@@ -100,8 +101,8 @@ type QuitRoomRes struct {
 type CreateRoomReq struct {
 	g.Meta `path:"/createRoom" tags:"chat" method:"post" summary:"创建房间"`
 	commonApi.Author
-	Name    string   `p:"name" v:"required#房间名称必须"`  // 房间名称
-	UserIds []uint64 `p:"userIds" v:"required#成员必须"` //用户id列表
+	Name    string   `p:"name" v:"required#房间名称必须"` // 房间名称
+	UserIds []uint64 `p:"userIds" v:"required#成员必须"`  //用户id列表
 }
 
 type CreateRoomRes struct {

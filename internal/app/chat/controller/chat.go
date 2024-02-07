@@ -225,6 +225,7 @@ func (c *chatController) SignalingWs(ctx context.Context, req *chat.SignalingWsR
 
 // 向目标发起音视频连接
 func (c *chatController) InitVideo(ctx context.Context, req *chat.InitVideoReq) (res *chat.InitVideoRes, err error) {
+
 	return
 }
 
