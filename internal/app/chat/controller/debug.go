@@ -14,6 +14,9 @@ func (d *Debug) Debug(ctx context.Context, req *chat.DebugReq) (res *chat.DebugR
 
 	var arr []string
 	expvar.Do(func(value expvar.KeyValue) {
+		if value.Key == "memstats" || value.Key == "cmdline" {
+			return
+		}
 		arr = append(arr, fmt.Sprintf("%s:%v\n", value.Key, value.Value))
 	})
 	res = &chat.DebugRes{

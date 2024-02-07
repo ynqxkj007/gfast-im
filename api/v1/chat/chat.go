@@ -8,6 +8,28 @@ import (
 	"github.com/tiger1103/gfast/v3/plugins/chat/logic"
 )
 
+type SignalingWsReq struct {
+	g.Meta `path:"/signalingWs" tags:"chat" method:"get" summary:"ws连接"`
+	commonApi.Author
+	RoomId string `json:"roomId"`
+}
+
+type SignalingWsRes struct {
+	commonApi.EmptyRes
+}
+
+// 发起音视频连接
+type InitVideoReq struct {
+	g.Meta `path:"/initVideo" tags:"chat" method:"get" summary:"发起音视频连接"`
+	commonApi.Author
+	From string   `json:"from"`
+	To   []string `json:"to"`
+}
+
+type InitVideoRes struct {
+	commonApi.EmptyRes
+}
+
 type ChatWsReq struct {
 	g.Meta `path:"/ws" tags:"chat" method:"get" summary:"ws连接"`
 	commonApi.Author

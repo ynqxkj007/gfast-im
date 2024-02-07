@@ -19,6 +19,8 @@ import (
 	systemService "github.com/tiger1103/gfast/v3/internal/app/system/service"
 	chartLogic "github.com/tiger1103/gfast/v3/plugins/chat/logic"
 	chartServer "github.com/tiger1103/gfast/v3/plugins/chat/server"
+	signailing "github.com/tiger1103/gfast/v3/plugins/signaling/signaling"
+	"github.com/tiger1103/gfast/v3/plugins/signaling/signalingLogic"
 	"math/rand"
 	"os"
 	"strconv"
@@ -26,8 +28,117 @@ import (
 )
 
 var ChatRoom *chartServer.Chart
+var Mrouter *signailing.Melody
+var UserCenter *signalingLogic.UserCenter
 
 func init() {
+	initializeChatRoom()
+	initializeSignaling()
+}
+
+func initializeSignaling() {
+	ctx := context.TODO()
+	Mrouter = signailing.New()
+	UserCenter = signalingLogic.NewUserCenter()
+	expvar.Publish("broadcaster.rooms", expvar.Func(func() any {
+		return UserCenter.Rooms.GetRooms()
+	}))
+
+	Mrouter.HandleConnect(func(s *signailing.Session) {
+		sh := signalingLogic.NewSessionHelp(s)
+		userId := sh.GetUserId()
+		roomId := sh.GetRoomId()
+		if userId == "" {
+			err := sh.Write(signalingLogic.NewErrorInfo(fmt.Sprintf("找不用户信息")).Byte())
+			if err != nil {
+				g.Log().Error(ctx, "sh.Write err:", err)
+			}
+			return
+		}
+
+		if roomId == "" {
+			err := sh.Write(signalingLogic.NewErrorInfo(fmt.Sprintf("房间号必须")).Byte())
+			if err != nil {
+				g.Log().Error(ctx, "sh.Write err:", err)
+			}
+			return
+		}
+
+		g.Log().Info(ctx, fmt.Sprintf("房间：%s ，用户：%s", roomId, userId))
+
+		if UserCenter.IsExist(userId) {
+			g.Log().Info(ctx, fmt.Sprintf("用户:%s已存在", userId))
+			err := sh.Write(signalingLogic.NewErrorInfo(fmt.Sprintf("用户:%s已存在", userId)).Byte())
+			if err != nil {
+				g.Log().Error(ctx, "sh.Write err:", err)
+			}
+			return
+		}
+
+		if UserCenter.Rooms.IsOverLoad(roomId) {
+			g.Log().Info(ctx, "房间已超员")
+			err := sh.Write(signalingLogic.NewErrorInfo("房间已超员").Byte())
+			if err != nil {
+				g.Log().Error(ctx, "sh.Write err:", err)
+			}
+			return
+		}
+
+		u := &signalingLogic.UserInfo{
+			ID:      userId,
+			Session: s,
+		}
+
+		// 添加用户
+		UserCenter.AddUser(s, u)
+
+		//  加入房间
+		UserCenter.Rooms.AddUserAndCreateRoom(roomId, u)
+
+		// 通知房间中的其他客户端有人加入
+		UserCenter.Rooms.Broadcast(roomId, signalingLogic.NewJoinMessage(userId).Byte(), func(info *signalingLogic.UserInfo) bool {
+			return info.ID != userId
+		})
+
+		err := sh.Write(signalingLogic.NewInform("成功加入聊天室").Byte())
+		if err != nil {
+			g.Log().Info(ctx, "sh.Write err:", err)
+		}
+		g.Log().Info(ctx, fmt.Sprintf("用户:%s加入聊天室", userId))
+
+	})
+
+	Mrouter.HandleDisconnect(func(session *signailing.Session) {
+		sh := signalingLogic.NewSessionHelp(session)
+		roomId := sh.GetRoomId()
+		userId := sh.GetUserId()
+		UserCenter.RemoveAll(roomId, session)
+		// 通知房间中的其他客户端此连接退出
+		UserCenter.Rooms.Broadcast(roomId, signalingLogic.NewLeaveMessage(userId).Byte())
+		g.Log().Info(ctx, fmt.Sprintf("用户:%s,退出聊天室%s", userId, roomId))
+	})
+
+	Mrouter.HandleError(func(session *signailing.Session, err error) {
+		sh := signalingLogic.NewSessionHelp(session)
+		g.Log().Info(ctx, fmt.Sprintf("用户:%s，退出， 错误: %s", sh.GetUserId(), err.Error()))
+	})
+
+	Mrouter.HandleMessage(func(session *signailing.Session, msg []byte) {
+		message := signalingLogic.NewClientMessage(msg)
+		users := UserCenter.Filter(func(info *signalingLogic.UserInfo) bool {
+			return info.ID == message.To
+		})
+		if !users.IsEmpty() {
+			g.Log().Info(ctx, fmt.Sprintf("message->toid: %s, content: %v", message.To, message.Msg))
+			if err := Mrouter.BroadcastMultiple(msg, users.Sessions()); err != nil {
+				g.Log().Info(ctx, fmt.Sprintf("Mrouter.BroadcastMultiple err : %s", err.Error()))
+			}
+		}
+
+	})
+}
+
+func initializeChatRoom() {
 	ctx := context.TODO()
 	ChatRoom = chartServer.NewChart()
 	ChatRoom.HandleConnect(func(user *chartLogic.User) {
@@ -82,11 +193,9 @@ func init() {
 	//	}
 	//}()
 
-	expvar.Publish("broadcaster.users", expvar.Func(calcBroadcasterUsers))
-}
-
-func calcBroadcasterUsers() interface{} {
-	return ChatRoom.UserListHandleFunc()
+	expvar.Publish("broadcaster.users", expvar.Func(func() any {
+		return ChatRoom.UserListHandleFunc()
+	}))
 }
 
 // 房间标识前缀
@@ -95,6 +204,29 @@ const RootIdentifyPrefix = "roomIdentify_"
 type chatController struct{}
 
 var ChatController = new(chatController)
+
+func (c *chatController) SignalingWs(ctx context.Context, req *chat.SignalingWsReq) (res *chat.SignalingWsRes, err error) {
+
+	loginUserRes := systemService.Context().GetLoginUser(ctx).LoginUserRes
+	sysUserSuper := model.SysUserSuper{}
+	_ = sysUserSuper.Get(loginUserRes.Id)
+	payload := make(map[string]interface{})
+	if !sysUserSuper.IsEmpty() {
+		payload["userId"] = gconv.String(sysUserSuper.Id)
+		payload["roomId"] = req.RoomId
+	}
+
+	err = Mrouter.HandleRequestWithKeys(g.RequestFromCtx(ctx).Response.Writer, g.RequestFromCtx(ctx).Request, payload)
+	if err != nil {
+		g.Log().Info(ctx, "/signalingWs request err:", err)
+	}
+	return
+}
+
+// 向目标发起音视频连接
+func (c *chatController) InitVideo(ctx context.Context, req *chat.InitVideoReq) (res *chat.InitVideoRes, err error) {
+	return
+}
 
 func (c *chatController) WebSocketHandle(ctx context.Context, req *chat.ChatWsReq) (res *chat.ChatWsRes, err error) {
 	loginUserRes := systemService.Context().GetLoginUser(ctx).LoginUserRes

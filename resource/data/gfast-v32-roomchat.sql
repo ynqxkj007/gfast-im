@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhsot8.0
-Source Server Version : 80012
+Source Server         : localhsot5.7
+Source Server Version : 50726
 Source Host           : localhost:3306
 Source Database       : gfast-v32-roomchat
 
 Target Server Type    : MYSQL
-Target Server Version : 80012
+Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2023-12-12 11:36:16
+Date: 2024-02-07 12:37:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,14 +20,14 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `casbin_rule`;
 CREATE TABLE `casbin_rule` (
-  `ptype` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v0` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v1` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v2` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v3` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v4` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `v5` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+  `ptype` varchar(10) DEFAULT NULL,
+  `v0` varchar(256) DEFAULT NULL,
+  `v1` varchar(256) DEFAULT NULL,
+  `v2` varchar(256) DEFAULT NULL,
+  `v3` varchar(256) DEFAULT NULL,
+  `v4` varchar(256) DEFAULT NULL,
+  `v5` varchar(256) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of casbin_rule
@@ -74,13 +74,18 @@ INSERT INTO `casbin_rule` VALUES ('g', 'u_31', '9', '', '', '', '');
 DROP TABLE IF EXISTS `message_content`;
 CREATE TABLE `message_content` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `content` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=407 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=412 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of message_content
 -- ----------------------------
+INSERT INTO `message_content` VALUES ('407', '你号\n');
+INSERT INTO `message_content` VALUES ('408', 'aasd');
+INSERT INTO `message_content` VALUES ('409', '444');
+INSERT INTO `message_content` VALUES ('410', 'asdasd');
+INSERT INTO `message_content` VALUES ('411', 'yyyy');
 
 -- ----------------------------
 -- Table structure for message_list
@@ -97,13 +102,18 @@ CREATE TABLE `message_list` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  `room_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间号',
+  `room_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间号',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=540 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=545 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of message_list
 -- ----------------------------
+INSERT INTO `message_list` VALUES ('540', '31', '0', '0', null, '1', '407', '2024-02-05 18:01:18', '2024-02-05 18:01:18', null, '');
+INSERT INTO `message_list` VALUES ('541', '31', '0', '0', null, '1', '408', '2024-02-05 18:06:10', '2024-02-05 18:06:10', null, '');
+INSERT INTO `message_list` VALUES ('542', '1', '0', '0', null, '31', '409', '2024-02-05 18:06:16', '2024-02-05 18:06:16', null, '');
+INSERT INTO `message_list` VALUES ('543', '1', '0', '0', null, '31', '410', '2024-02-05 18:18:12', '2024-02-05 18:18:12', null, '');
+INSERT INTO `message_list` VALUES ('544', '31', '0', '0', null, '1', '411', '2024-02-05 18:18:17', '2024-02-05 18:18:17', null, '');
 
 -- ----------------------------
 -- Table structure for message_room
@@ -111,19 +121,22 @@ CREATE TABLE `message_list` (
 DROP TABLE IF EXISTS `message_room`;
 CREATE TABLE `message_room` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间名称',
-  `identify` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间唯一标识',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间名称',
+  `identify` varchar(255) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '房间唯一标识',
   `inform` text COLLATE utf8_unicode_ci COMMENT '群公告',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `identify_unique` (`identify`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of message_room
 -- ----------------------------
+INSERT INTO `message_room` VALUES ('21', '群聊_151', 'roomIdentify_21', null, '2024-02-04 09:21:39', '2024-02-04 09:21:39', null);
+INSERT INTO `message_room` VALUES ('22', '群聊_922', 'roomIdentify_22', null, '2024-02-04 10:12:47', '2024-02-04 10:12:47', null);
+INSERT INTO `message_room` VALUES ('23', '群聊_443', 'roomIdentify_23', null, '2024-02-05 09:23:35', '2024-02-05 09:23:35', null);
 
 -- ----------------------------
 -- Table structure for message_room_member
@@ -135,11 +148,20 @@ CREATE TABLE `message_room_member` (
   `user_id` bigint(20) unsigned DEFAULT '0' COMMENT '成员ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `room_id,user_id` (`room_id`,`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of message_room_member
 -- ----------------------------
+INSERT INTO `message_room_member` VALUES ('58', '21', '1');
+INSERT INTO `message_room_member` VALUES ('59', '21', '43');
+INSERT INTO `message_room_member` VALUES ('60', '21', '44');
+INSERT INTO `message_room_member` VALUES ('61', '22', '1');
+INSERT INTO `message_room_member` VALUES ('62', '22', '43');
+INSERT INTO `message_room_member` VALUES ('63', '22', '47');
+INSERT INTO `message_room_member` VALUES ('64', '23', '1');
+INSERT INTO `message_room_member` VALUES ('65', '23', '31');
+INSERT INTO `message_room_member` VALUES ('66', '23', '43');
 
 -- ----------------------------
 -- Table structure for sys_auth_rule
@@ -148,31 +170,31 @@ DROP TABLE IF EXISTS `sys_auth_rule`;
 CREATE TABLE `sys_auth_rule` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规则名称',
-  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规则名称',
-  `icon` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `condition` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '条件',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '规则名称',
+  `icon` varchar(300) NOT NULL DEFAULT '' COMMENT '图标',
+  `condition` varchar(255) NOT NULL DEFAULT '' COMMENT '条件',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `menu_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '类型 0目录 1菜单 2按钮',
   `weigh` int(10) NOT NULL DEFAULT '0' COMMENT '权重',
   `is_hide` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '显示状态',
-  `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路由地址',
-  `component` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '组件路径',
+  `path` varchar(100) NOT NULL DEFAULT '' COMMENT '路由地址',
+  `component` varchar(100) NOT NULL DEFAULT '' COMMENT '组件路径',
   `is_link` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否外链 1是 0否',
-  `module_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '所属模块',
+  `module_type` varchar(30) NOT NULL DEFAULT '' COMMENT '所属模块',
   `model_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '模型ID',
   `is_iframe` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否内嵌iframe',
   `is_cached` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否缓存',
-  `redirect` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '路由重定向地址',
+  `redirect` varchar(255) NOT NULL DEFAULT '' COMMENT '路由重定向地址',
   `is_affix` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否固定',
-  `link_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '链接地址',
+  `link_url` varchar(500) NOT NULL DEFAULT '' COMMENT '链接地址',
   `created_at` datetime DEFAULT NULL COMMENT '创建日期',
   `updated_at` datetime DEFAULT NULL COMMENT '修改日期',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `pid` (`pid`) USING BTREE,
   KEY `weigh` (`weigh`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='菜单节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单节点表';
 
 -- ----------------------------
 -- Records of sys_auth_rule
@@ -216,18 +238,18 @@ INSERT INTO `sys_auth_rule` VALUES ('39', '31', 'api/v1/system/online/list', '�
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `config_id` int(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '参数主键',
-  `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '参数名称',
-  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '参数键名',
-  `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '参数键值',
+  `config_name` varchar(100) DEFAULT '' COMMENT '参数名称',
+  `config_key` varchar(100) DEFAULT '' COMMENT '参数键名',
+  `config_value` varchar(500) DEFAULT '' COMMENT '参数键值',
   `config_type` tinyint(1) DEFAULT '0' COMMENT '系统内置（Y是 N否）',
   `create_by` int(64) unsigned DEFAULT '0' COMMENT '创建者',
   `update_by` int(64) unsigned DEFAULT '0' COMMENT '更新者',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`config_id`) USING BTREE,
   UNIQUE KEY `uni_config_key` (`config_key`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_config
@@ -245,12 +267,12 @@ DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
   `parent_id` bigint(20) DEFAULT '0' COMMENT '父部门id',
-  `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '祖级列表',
-  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '部门名称',
+  `ancestors` varchar(50) DEFAULT '' COMMENT '祖级列表',
+  `dept_name` varchar(30) DEFAULT '' COMMENT '部门名称',
   `order_num` int(4) DEFAULT '0' COMMENT '显示顺序',
-  `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '负责人',
-  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '联系电话',
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '邮箱',
+  `leader` varchar(20) DEFAULT NULL COMMENT '负责人',
+  `phone` varchar(11) DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
   `status` tinyint(3) unsigned DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
   `created_by` bigint(20) unsigned DEFAULT '0' COMMENT '创建人',
   `updated_by` bigint(20) DEFAULT NULL COMMENT '修改人',
@@ -258,7 +280,7 @@ CREATE TABLE `sys_dept` (
   `updated_at` datetime DEFAULT NULL COMMENT '修改时间',
   `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='部门表';
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='部门表';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -285,20 +307,20 @@ DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data` (
   `dict_code` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
   `dict_sort` int(4) DEFAULT '0' COMMENT '字典排序',
-  `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典标签',
-  `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典键值',
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典类型',
-  `css_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
-  `list_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '表格回显样式',
+  `dict_label` varchar(100) DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(100) DEFAULT '' COMMENT '字典键值',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
+  `css_class` varchar(100) DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `list_class` varchar(100) DEFAULT NULL COMMENT '表格回显样式',
   `is_default` tinyint(1) DEFAULT '0' COMMENT '是否默认（1是 0否）',
   `status` tinyint(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
   `create_by` bigint(64) unsigned DEFAULT '0' COMMENT '创建者',
   `update_by` bigint(64) unsigned DEFAULT '0' COMMENT '更新者',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -381,17 +403,17 @@ INSERT INTO `sys_dict_data` VALUES ('105', '0', '删除', 'DELETE', 'sys_oper_lo
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
   `dict_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '字典主键',
-  `dict_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典名称',
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '字典类型',
+  `dict_name` varchar(100) DEFAULT '' COMMENT '字典名称',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
   `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态（0正常 1停用）',
   `create_by` int(64) unsigned DEFAULT '0' COMMENT '创建者',
   `update_by` int(64) unsigned DEFAULT '0' COMMENT '更新者',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `created_at` datetime DEFAULT NULL COMMENT '创建日期',
   `updated_at` datetime DEFAULT NULL COMMENT '修改日期',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE KEY `dict_type` (`dict_type`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -427,17 +449,17 @@ INSERT INTO `sys_dict_type` VALUES ('50', '操作日志类型', 'sys_oper_log_ty
 DROP TABLE IF EXISTS `sys_login_log`;
 CREATE TABLE `sys_login_log` (
   `info_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
-  `login_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录账号',
-  `ipaddr` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录IP地址',
-  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录地点',
-  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作系统',
+  `login_name` varchar(50) DEFAULT '' COMMENT '登录账号',
+  `ipaddr` varchar(50) DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) DEFAULT '' COMMENT '操作系统',
   `status` tinyint(4) DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
-  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '提示消息',
+  `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '登录时间',
-  `module` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '登录模块',
+  `module` varchar(30) DEFAULT '' COMMENT '登录模块',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_login_log
@@ -452,6 +474,15 @@ INSERT INTO `sys_login_log` VALUES ('8', '10001', '127.0.0.1', '内网IP', 'Fire
 INSERT INTO `sys_login_log` VALUES ('9', 'demo', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2023-12-11 18:04:07', '系统后台');
 INSERT INTO `sys_login_log` VALUES ('10', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2023-12-12 08:38:18', '系统后台');
 INSERT INTO `sys_login_log` VALUES ('11', 'demo', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2023-12-12 08:56:28', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('12', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-04 09:18:46', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('13', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-04 09:20:54', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('14', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-04 10:12:33', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('15', 'demo', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-05 09:00:44', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('16', 'admin', '127.0.0.1', '内网IP', 'Firefox', 'Windows 10', '1', '登录成功', '2024-02-05 09:19:45', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('17', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-05 15:43:52', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('18', 'demo', '127.0.0.1', '内网IP', 'Firefox', 'Windows 10', '1', '登录成功', '2024-02-05 18:01:12', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('19', 'admin', '::1', '内网IP', 'Chrome', 'Windows 10', '1', '登录成功', '2024-02-06 14:31:41', '系统后台');
+INSERT INTO `sys_login_log` VALUES ('20', 'demo', '127.0.0.1', '内网IP', 'Firefox', 'Windows 10', '1', '登录成功', '2024-02-06 14:40:56', '系统后台');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -459,21 +490,21 @@ INSERT INTO `sys_login_log` VALUES ('11', 'demo', '::1', '内网IP', 'Chrome', '
 DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log` (
   `oper_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '日志主键',
-  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '模块标题',
+  `title` varchar(50) DEFAULT '' COMMENT '模块标题',
   `business_type` int(2) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
-  `method` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '方法名称',
-  `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '请求方式',
+  `method` varchar(100) DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) DEFAULT '' COMMENT '请求方式',
   `operator_type` int(1) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
-  `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作人员',
-  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '部门名称',
-  `oper_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '请求URL',
-  `oper_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '主机地址',
-  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '操作地点',
-  `oper_param` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '请求参数',
-  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '错误消息',
+  `oper_name` varchar(50) DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(500) DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(50) DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) DEFAULT '' COMMENT '操作地点',
+  `oper_param` text COMMENT '请求参数',
+  `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=375 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -561,6 +592,237 @@ INSERT INTO `sys_oper_log` VALUES ('140', '用户管理', '0', '/api/v1/system/u
 INSERT INTO `sys_oper_log` VALUES ('141', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2023-12-12 10:13:22');
 INSERT INTO `sys_oper_log` VALUES ('142', '', '0', '/api/v1/system/user/edit', 'PUT', '1', 'admin', '深圳总公司', '/api/v1/system/user/edit', '::1', '内网IP', '{\"deptId\":109,\"email\":\"123@qq.com\",\"isAdmin\":1,\"mobile\":\"15334455789\",\"nickName\":\"演示账号\",\"password\":\"-\",\"postIds\":[2],\"remark\":\"3\",\"roleIds\":[9],\"sex\":\"2\",\"status\":1,\"userId\":31,\"userName\":\"demo\"}', '', '2023-12-12 10:13:26');
 INSERT INTO `sys_oper_log` VALUES ('143', '用户管理', '0', '/api/v1/system/user/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/list?pageNum=1&pageSize=10&deptId=&mobile=&status=&keyWords=', '::1', '内网IP', '{\"deptId\":\"\",\"keyWords\":\"\",\"mobile\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2023-12-12 10:13:26');
+INSERT INTO `sys_oper_log` VALUES ('144', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 09:18:49');
+INSERT INTO `sys_oper_log` VALUES ('145', '', '0', '/api/v1/system/personal/getPersonalInfo', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/personal/getPersonalInfo', '::1', '内网IP', '{}', '', '2024-02-04 09:18:56');
+INSERT INTO `sys_oper_log` VALUES ('146', '', '0', '/api/v1/system/personal/resetPwd', 'PUT', '1', 'admin', '深圳总公司', '/api/v1/system/personal/resetPwd', '::1', '内网IP', '{\"password\":\"123456\"}', '', '2024-02-04 09:19:05');
+INSERT INTO `sys_oper_log` VALUES ('147', '', '0', '/api/v1/system/personal/resetPwd', 'PUT', '1', 'admin', '深圳总公司', '/api/v1/system/personal/resetPwd', '::1', '内网IP', '{\"password\":\"123456\"}', '', '2024-02-04 09:19:47');
+INSERT INTO `sys_oper_log` VALUES ('148', '', '0', '/api/v1/system/personal/getPersonalInfo', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/personal/getPersonalInfo', '::1', '内网IP', '{}', '', '2024-02-04 09:20:55');
+INSERT INTO `sys_oper_log` VALUES ('149', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 09:20:55');
+INSERT INTO `sys_oper_log` VALUES ('150', '', '0', '/api/v1/system/dict/data/getDictData', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/data/getDictData?dictType=sys_user_sex&defaultValue=', '::1', '内网IP', '{\"defaultValue\":\"\",\"dictType\":\"sys_user_sex\"}', '', '2024-02-04 09:21:01');
+INSERT INTO `sys_oper_log` VALUES ('151', '', '0', '/api/v1/system/dept/treeSelect', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dept/treeSelect', '::1', '内网IP', '{}', '', '2024-02-04 09:21:01');
+INSERT INTO `sys_oper_log` VALUES ('152', '用户管理', '0', '/api/v1/system/user/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/list?pageNum=1&pageSize=10&deptId=&mobile=&status=&keyWords=', '::1', '内网IP', '{\"deptId\":\"\",\"keyWords\":\"\",\"mobile\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 09:21:01');
+INSERT INTO `sys_oper_log` VALUES ('153', '', '0', '/api/v1/system/user/params', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/params', '::1', '内网IP', '{}', '', '2024-02-04 09:21:01');
+INSERT INTO `sys_oper_log` VALUES ('154', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-04 09:21:04');
+INSERT INTO `sys_oper_log` VALUES ('155', '', '0', '/api/v1/system/user/resetPwd', 'PUT', '1', 'admin', '深圳总公司', '/api/v1/system/user/resetPwd', '::1', '内网IP', '{\"password\":\"123456\",\"userId\":31}', '', '2024-02-04 09:21:13');
+INSERT INTO `sys_oper_log` VALUES ('156', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 10:12:04');
+INSERT INTO `sys_oper_log` VALUES ('157', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 10:12:34');
+INSERT INTO `sys_oper_log` VALUES ('158', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:27:47');
+INSERT INTO `sys_oper_log` VALUES ('159', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:28:41');
+INSERT INTO `sys_oper_log` VALUES ('160', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:30:53');
+INSERT INTO `sys_oper_log` VALUES ('161', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:33:23');
+INSERT INTO `sys_oper_log` VALUES ('162', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:33:57');
+INSERT INTO `sys_oper_log` VALUES ('163', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:35:36');
+INSERT INTO `sys_oper_log` VALUES ('164', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:36:39');
+INSERT INTO `sys_oper_log` VALUES ('165', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:41:45');
+INSERT INTO `sys_oper_log` VALUES ('166', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:45:11');
+INSERT INTO `sys_oper_log` VALUES ('167', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 11:52:42');
+INSERT INTO `sys_oper_log` VALUES ('168', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 14:38:41');
+INSERT INTO `sys_oper_log` VALUES ('169', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 14:55:58');
+INSERT INTO `sys_oper_log` VALUES ('170', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 14:57:48');
+INSERT INTO `sys_oper_log` VALUES ('171', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 14:58:01');
+INSERT INTO `sys_oper_log` VALUES ('172', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:03:22');
+INSERT INTO `sys_oper_log` VALUES ('173', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:05:00');
+INSERT INTO `sys_oper_log` VALUES ('174', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:12:52');
+INSERT INTO `sys_oper_log` VALUES ('175', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:17:43');
+INSERT INTO `sys_oper_log` VALUES ('176', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:18:20');
+INSERT INTO `sys_oper_log` VALUES ('177', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:18:24');
+INSERT INTO `sys_oper_log` VALUES ('178', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:20:21');
+INSERT INTO `sys_oper_log` VALUES ('179', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:21:04');
+INSERT INTO `sys_oper_log` VALUES ('180', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:32:28');
+INSERT INTO `sys_oper_log` VALUES ('181', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:44:18');
+INSERT INTO `sys_oper_log` VALUES ('182', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:45:10');
+INSERT INTO `sys_oper_log` VALUES ('183', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:45:27');
+INSERT INTO `sys_oper_log` VALUES ('184', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:49:26');
+INSERT INTO `sys_oper_log` VALUES ('185', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:49:30');
+INSERT INTO `sys_oper_log` VALUES ('186', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:51:54');
+INSERT INTO `sys_oper_log` VALUES ('187', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:51:58');
+INSERT INTO `sys_oper_log` VALUES ('188', '字典管理', '0', '/api/v1/system/dict/type/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/type/list?pageNum=1&pageSize=10&dictName=&dictType=&status=', '::1', '内网IP', '{\"dictName\":\"\",\"dictType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 15:54:46');
+INSERT INTO `sys_oper_log` VALUES ('189', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:55:25');
+INSERT INTO `sys_oper_log` VALUES ('190', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:55:30');
+INSERT INTO `sys_oper_log` VALUES ('191', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:57:52');
+INSERT INTO `sys_oper_log` VALUES ('192', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:57:56');
+INSERT INTO `sys_oper_log` VALUES ('193', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:58:10');
+INSERT INTO `sys_oper_log` VALUES ('194', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:58:40');
+INSERT INTO `sys_oper_log` VALUES ('195', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:59:34');
+INSERT INTO `sys_oper_log` VALUES ('196', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:59:37');
+INSERT INTO `sys_oper_log` VALUES ('197', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 15:59:57');
+INSERT INTO `sys_oper_log` VALUES ('198', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:00:02');
+INSERT INTO `sys_oper_log` VALUES ('199', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:00:34');
+INSERT INTO `sys_oper_log` VALUES ('200', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:00:37');
+INSERT INTO `sys_oper_log` VALUES ('201', '字典管理', '0', '/api/v1/system/dict/type/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/type/list?pageNum=1&pageSize=10&dictName=&dictType=&status=', '::1', '内网IP', '{\"dictName\":\"\",\"dictType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 16:00:42');
+INSERT INTO `sys_oper_log` VALUES ('202', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:01:01');
+INSERT INTO `sys_oper_log` VALUES ('203', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:01:05');
+INSERT INTO `sys_oper_log` VALUES ('204', '字典管理', '0', '/api/v1/system/dict/type/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/type/list?pageNum=1&pageSize=10&dictName=&dictType=&status=', '::1', '内网IP', '{\"dictName\":\"\",\"dictType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 16:01:05');
+INSERT INTO `sys_oper_log` VALUES ('205', '', '0', '/api/v1/system/dict/data/getDictData', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/data/getDictData?dictType=sys_yes_no&defaultValue=', '::1', '内网IP', '{\"defaultValue\":\"\",\"dictType\":\"sys_yes_no\"}', '', '2024-02-04 16:01:08');
+INSERT INTO `sys_oper_log` VALUES ('206', '参数管理', '0', '/api/v1/system/config/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/config/list?pageNum=1&pageSize=10&configName=&configKey=&configType=', '::1', '内网IP', '{\"configKey\":\"\",\"configName\":\"\",\"configType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\"}', '', '2024-02-04 16:01:08');
+INSERT INTO `sys_oper_log` VALUES ('207', '字典管理', '0', '/api/v1/system/dict/type/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/type/list?pageNum=1&pageSize=10&dictName=&dictType=&status=', '::1', '内网IP', '{\"dictName\":\"\",\"dictType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 16:01:11');
+INSERT INTO `sys_oper_log` VALUES ('208', '', '0', '/api/v1/system/dict/data/getDictData', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/data/getDictData?dictType=sys_yes_no&defaultValue=', '::1', '内网IP', '{\"defaultValue\":\"\",\"dictType\":\"sys_yes_no\"}', '', '2024-02-04 16:01:12');
+INSERT INTO `sys_oper_log` VALUES ('209', '参数管理', '0', '/api/v1/system/config/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/config/list?pageNum=1&pageSize=10&configName=&configKey=&configType=', '::1', '内网IP', '{\"configKey\":\"\",\"configName\":\"\",\"configType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\"}', '', '2024-02-04 16:01:12');
+INSERT INTO `sys_oper_log` VALUES ('210', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:04:48');
+INSERT INTO `sys_oper_log` VALUES ('211', '', '0', '/api/v1/system/dict/data/getDictData', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/data/getDictData?dictType=sys_yes_no&defaultValue=', '::1', '内网IP', '{\"defaultValue\":\"\",\"dictType\":\"sys_yes_no\"}', '', '2024-02-04 16:04:51');
+INSERT INTO `sys_oper_log` VALUES ('212', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:04:51');
+INSERT INTO `sys_oper_log` VALUES ('213', '参数管理', '0', '/api/v1/system/config/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/config/list?pageNum=1&pageSize=10&configName=&configKey=&configType=', '::1', '内网IP', '{\"configKey\":\"\",\"configName\":\"\",\"configType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\"}', '', '2024-02-04 16:04:51');
+INSERT INTO `sys_oper_log` VALUES ('214', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:06:08');
+INSERT INTO `sys_oper_log` VALUES ('215', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:06:11');
+INSERT INTO `sys_oper_log` VALUES ('216', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:07:33');
+INSERT INTO `sys_oper_log` VALUES ('217', '字典管理', '0', '/api/v1/system/dict/type/list', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/dict/type/list?pageNum=1&pageSize=10&dictName=&dictType=&status=', '::1', '内网IP', '{\"dictName\":\"\",\"dictType\":\"\",\"pageNum\":\"1\",\"pageSize\":\"10\",\"status\":\"\"}', '', '2024-02-04 16:07:43');
+INSERT INTO `sys_oper_log` VALUES ('218', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:11:25');
+INSERT INTO `sys_oper_log` VALUES ('219', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:14:52');
+INSERT INTO `sys_oper_log` VALUES ('220', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:02');
+INSERT INTO `sys_oper_log` VALUES ('221', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:12');
+INSERT INTO `sys_oper_log` VALUES ('222', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:15');
+INSERT INTO `sys_oper_log` VALUES ('223', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:26');
+INSERT INTO `sys_oper_log` VALUES ('224', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:26');
+INSERT INTO `sys_oper_log` VALUES ('225', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:29');
+INSERT INTO `sys_oper_log` VALUES ('226', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:50');
+INSERT INTO `sys_oper_log` VALUES ('227', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:15:54');
+INSERT INTO `sys_oper_log` VALUES ('228', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:19:16');
+INSERT INTO `sys_oper_log` VALUES ('229', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:19:19');
+INSERT INTO `sys_oper_log` VALUES ('230', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:22:24');
+INSERT INTO `sys_oper_log` VALUES ('231', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:23:06');
+INSERT INTO `sys_oper_log` VALUES ('232', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:23:25');
+INSERT INTO `sys_oper_log` VALUES ('233', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:24:34');
+INSERT INTO `sys_oper_log` VALUES ('234', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:24:42');
+INSERT INTO `sys_oper_log` VALUES ('235', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:27:41');
+INSERT INTO `sys_oper_log` VALUES ('236', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 16:45:25');
+INSERT INTO `sys_oper_log` VALUES ('237', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:15:08');
+INSERT INTO `sys_oper_log` VALUES ('238', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:32:47');
+INSERT INTO `sys_oper_log` VALUES ('239', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:33:04');
+INSERT INTO `sys_oper_log` VALUES ('240', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:35:54');
+INSERT INTO `sys_oper_log` VALUES ('241', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:40:02');
+INSERT INTO `sys_oper_log` VALUES ('242', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:40:49');
+INSERT INTO `sys_oper_log` VALUES ('243', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:44:59');
+INSERT INTO `sys_oper_log` VALUES ('244', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:45:14');
+INSERT INTO `sys_oper_log` VALUES ('245', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:52:54');
+INSERT INTO `sys_oper_log` VALUES ('246', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:54:06');
+INSERT INTO `sys_oper_log` VALUES ('247', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:54:26');
+INSERT INTO `sys_oper_log` VALUES ('248', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:55:20');
+INSERT INTO `sys_oper_log` VALUES ('249', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:56:54');
+INSERT INTO `sys_oper_log` VALUES ('250', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 17:59:55');
+INSERT INTO `sys_oper_log` VALUES ('251', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:01:52');
+INSERT INTO `sys_oper_log` VALUES ('252', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:03:46');
+INSERT INTO `sys_oper_log` VALUES ('253', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:05:18');
+INSERT INTO `sys_oper_log` VALUES ('254', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:09:06');
+INSERT INTO `sys_oper_log` VALUES ('255', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:12:01');
+INSERT INTO `sys_oper_log` VALUES ('256', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-04 18:12:47');
+INSERT INTO `sys_oper_log` VALUES ('257', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:00:47');
+INSERT INTO `sys_oper_log` VALUES ('258', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:18:37');
+INSERT INTO `sys_oper_log` VALUES ('259', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 09:19:46');
+INSERT INTO `sys_oper_log` VALUES ('260', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:28:46');
+INSERT INTO `sys_oper_log` VALUES ('261', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:43:16');
+INSERT INTO `sys_oper_log` VALUES ('262', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:44:15');
+INSERT INTO `sys_oper_log` VALUES ('263', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 09:48:04');
+INSERT INTO `sys_oper_log` VALUES ('264', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 10:16:49');
+INSERT INTO `sys_oper_log` VALUES ('265', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 10:27:16');
+INSERT INTO `sys_oper_log` VALUES ('266', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 10:27:16');
+INSERT INTO `sys_oper_log` VALUES ('267', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 10:27:22');
+INSERT INTO `sys_oper_log` VALUES ('268', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:40:22');
+INSERT INTO `sys_oper_log` VALUES ('269', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:40:22');
+INSERT INTO `sys_oper_log` VALUES ('270', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:40:29');
+INSERT INTO `sys_oper_log` VALUES ('271', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:45:13');
+INSERT INTO `sys_oper_log` VALUES ('272', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:45:13');
+INSERT INTO `sys_oper_log` VALUES ('273', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:45:26');
+INSERT INTO `sys_oper_log` VALUES ('274', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:45:26');
+INSERT INTO `sys_oper_log` VALUES ('275', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:45:46');
+INSERT INTO `sys_oper_log` VALUES ('276', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:45:46');
+INSERT INTO `sys_oper_log` VALUES ('277', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:46:14');
+INSERT INTO `sys_oper_log` VALUES ('278', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:46:15');
+INSERT INTO `sys_oper_log` VALUES ('279', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:46:49');
+INSERT INTO `sys_oper_log` VALUES ('280', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:46:49');
+INSERT INTO `sys_oper_log` VALUES ('281', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:49:49');
+INSERT INTO `sys_oper_log` VALUES ('282', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:49:49');
+INSERT INTO `sys_oper_log` VALUES ('283', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:49:50');
+INSERT INTO `sys_oper_log` VALUES ('284', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:49:50');
+INSERT INTO `sys_oper_log` VALUES ('285', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:50:02');
+INSERT INTO `sys_oper_log` VALUES ('286', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '127.0.0.1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 11:50:37');
+INSERT INTO `sys_oper_log` VALUES ('287', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '::1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 11:50:37');
+INSERT INTO `sys_oper_log` VALUES ('288', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 15:43:54');
+INSERT INTO `sys_oper_log` VALUES ('289', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 15:53:38');
+INSERT INTO `sys_oper_log` VALUES ('290', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 16:26:32');
+INSERT INTO `sys_oper_log` VALUES ('291', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 16:28:06');
+INSERT INTO `sys_oper_log` VALUES ('292', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 17:02:29');
+INSERT INTO `sys_oper_log` VALUES ('293', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 17:59:11');
+INSERT INTO `sys_oper_log` VALUES ('294', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:00:18');
+INSERT INTO `sys_oper_log` VALUES ('295', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:01:13');
+INSERT INTO `sys_oper_log` VALUES ('296', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:05:38');
+INSERT INTO `sys_oper_log` VALUES ('297', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:05:39');
+INSERT INTO `sys_oper_log` VALUES ('298', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:05:41');
+INSERT INTO `sys_oper_log` VALUES ('299', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:05:47');
+INSERT INTO `sys_oper_log` VALUES ('300', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:08:11');
+INSERT INTO `sys_oper_log` VALUES ('301', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:08:11');
+INSERT INTO `sys_oper_log` VALUES ('302', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:17:44');
+INSERT INTO `sys_oper_log` VALUES ('303', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:17:44');
+INSERT INTO `sys_oper_log` VALUES ('304', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-05 18:18:02');
+INSERT INTO `sys_oper_log` VALUES ('305', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-05 18:18:05');
+INSERT INTO `sys_oper_log` VALUES ('306', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:31:43');
+INSERT INTO `sys_oper_log` VALUES ('307', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 14:40:57');
+INSERT INTO `sys_oper_log` VALUES ('308', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:48:04');
+INSERT INTO `sys_oper_log` VALUES ('309', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 14:48:04');
+INSERT INTO `sys_oper_log` VALUES ('310', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:48:09');
+INSERT INTO `sys_oper_log` VALUES ('311', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 14:50:09');
+INSERT INTO `sys_oper_log` VALUES ('312', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:50:09');
+INSERT INTO `sys_oper_log` VALUES ('313', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:50:16');
+INSERT INTO `sys_oper_log` VALUES ('314', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:53:21');
+INSERT INTO `sys_oper_log` VALUES ('315', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:57:23');
+INSERT INTO `sys_oper_log` VALUES ('316', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:57:43');
+INSERT INTO `sys_oper_log` VALUES ('317', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 14:59:17');
+INSERT INTO `sys_oper_log` VALUES ('318', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:59:18');
+INSERT INTO `sys_oper_log` VALUES ('319', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 14:59:40');
+INSERT INTO `sys_oper_log` VALUES ('320', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:01:00');
+INSERT INTO `sys_oper_log` VALUES ('321', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:01:00');
+INSERT INTO `sys_oper_log` VALUES ('322', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:08:38');
+INSERT INTO `sys_oper_log` VALUES ('323', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:08:38');
+INSERT INTO `sys_oper_log` VALUES ('324', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:15:17');
+INSERT INTO `sys_oper_log` VALUES ('325', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:15:17');
+INSERT INTO `sys_oper_log` VALUES ('326', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:15:27');
+INSERT INTO `sys_oper_log` VALUES ('327', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:15:56');
+INSERT INTO `sys_oper_log` VALUES ('328', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:15:56');
+INSERT INTO `sys_oper_log` VALUES ('329', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:16:02');
+INSERT INTO `sys_oper_log` VALUES ('330', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:16:06');
+INSERT INTO `sys_oper_log` VALUES ('331', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:16:07');
+INSERT INTO `sys_oper_log` VALUES ('332', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:20:24');
+INSERT INTO `sys_oper_log` VALUES ('333', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:20:26');
+INSERT INTO `sys_oper_log` VALUES ('334', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:21:11');
+INSERT INTO `sys_oper_log` VALUES ('335', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:21:11');
+INSERT INTO `sys_oper_log` VALUES ('336', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:28:00');
+INSERT INTO `sys_oper_log` VALUES ('337', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:29:25');
+INSERT INTO `sys_oper_log` VALUES ('338', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:29:25');
+INSERT INTO `sys_oper_log` VALUES ('339', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:29:31');
+INSERT INTO `sys_oper_log` VALUES ('340', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:30:26');
+INSERT INTO `sys_oper_log` VALUES ('341', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:30:26');
+INSERT INTO `sys_oper_log` VALUES ('342', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:44:02');
+INSERT INTO `sys_oper_log` VALUES ('343', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:44:03');
+INSERT INTO `sys_oper_log` VALUES ('344', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:46:54');
+INSERT INTO `sys_oper_log` VALUES ('345', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 15:46:55');
+INSERT INTO `sys_oper_log` VALUES ('346', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:47:02');
+INSERT INTO `sys_oper_log` VALUES ('347', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 15:48:08');
+INSERT INTO `sys_oper_log` VALUES ('348', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:13:03');
+INSERT INTO `sys_oper_log` VALUES ('349', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:14:33');
+INSERT INTO `sys_oper_log` VALUES ('350', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:15:58');
+INSERT INTO `sys_oper_log` VALUES ('351', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:15:58');
+INSERT INTO `sys_oper_log` VALUES ('352', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:16:05');
+INSERT INTO `sys_oper_log` VALUES ('353', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:44:19');
+INSERT INTO `sys_oper_log` VALUES ('354', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:44:20');
+INSERT INTO `sys_oper_log` VALUES ('355', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:50:32');
+INSERT INTO `sys_oper_log` VALUES ('356', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:50:33');
+INSERT INTO `sys_oper_log` VALUES ('357', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:50:38');
+INSERT INTO `sys_oper_log` VALUES ('358', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:54:35');
+INSERT INTO `sys_oper_log` VALUES ('359', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:54:35');
+INSERT INTO `sys_oper_log` VALUES ('360', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:55:34');
+INSERT INTO `sys_oper_log` VALUES ('361', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:55:34');
+INSERT INTO `sys_oper_log` VALUES ('362', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 16:56:45');
+INSERT INTO `sys_oper_log` VALUES ('363', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 16:56:46');
+INSERT INTO `sys_oper_log` VALUES ('364', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:03:27');
+INSERT INTO `sys_oper_log` VALUES ('365', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:03:27');
+INSERT INTO `sys_oper_log` VALUES ('366', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 17:03:27');
+INSERT INTO `sys_oper_log` VALUES ('367', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 17:03:28');
+INSERT INTO `sys_oper_log` VALUES ('368', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:03:39');
+INSERT INTO `sys_oper_log` VALUES ('369', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:10:37');
+INSERT INTO `sys_oper_log` VALUES ('370', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 17:10:38');
+INSERT INTO `sys_oper_log` VALUES ('371', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:11:07');
+INSERT INTO `sys_oper_log` VALUES ('372', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 17:11:07');
+INSERT INTO `sys_oper_log` VALUES ('373', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'admin', '深圳总公司', '/api/v1/system/user/getEdit?id=1', '::1', '内网IP', '{\"id\":\"1\"}', '', '2024-02-06 17:20:13');
+INSERT INTO `sys_oper_log` VALUES ('374', '', '0', '/api/v1/system/user/getEdit', 'GET', '1', 'demo', '财务部门', '/api/v1/system/user/getEdit?id=31', '127.0.0.1', '内网IP', '{\"id\":\"31\"}', '', '2024-02-06 17:20:19');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -568,18 +830,18 @@ INSERT INTO `sys_oper_log` VALUES ('143', '用户管理', '0', '/api/v1/system/u
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
   `post_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
-  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位编码',
-  `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
+  `post_code` varchar(64) NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) NOT NULL COMMENT '岗位名称',
   `post_sort` int(4) NOT NULL COMMENT '显示顺序',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `created_by` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '创建人',
   `updated_by` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '修改人',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '修改时间',
   `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='岗位信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='岗位信息表';
 
 -- ----------------------------
 -- Records of sys_post
@@ -599,13 +861,13 @@ CREATE TABLE `sys_role` (
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态;0:禁用;1:正常',
   `list_order` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '角色名称',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `data_scope` tinyint(3) unsigned NOT NULL DEFAULT '3' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `status` (`status`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
@@ -626,7 +888,7 @@ CREATE TABLE `sys_role_dept` (
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   `dept_id` bigint(20) NOT NULL COMMENT '部门ID',
   PRIMARY KEY (`role_id`,`dept_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='角色和部门关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色和部门关联表';
 
 -- ----------------------------
 -- Records of sys_role_dept
@@ -644,21 +906,21 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '用户名',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '中国手机不带国家代码，国际手机号格式为：国家代码-手机号',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '中国手机不带国家代码，国际手机号格式为：国家代码-手机号',
   `user_nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '用户昵称',
   `birthday` int(11) NOT NULL DEFAULT '0' COMMENT '生日',
-  `user_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '登录密码;cmf_password加密',
-  `user_salt` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '加密盐',
+  `user_password` varchar(255) NOT NULL DEFAULT '' COMMENT '登录密码;cmf_password加密',
+  `user_salt` char(10) NOT NULL COMMENT '加密盐',
   `user_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '用户状态;0:禁用,1:正常,2:未验证',
-  `user_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户登录邮箱',
+  `user_email` varchar(100) NOT NULL DEFAULT '' COMMENT '用户登录邮箱',
   `sex` tinyint(2) NOT NULL DEFAULT '0' COMMENT '性别;0:保密,1:男,2:女',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户头像',
+  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '用户头像',
   `dept_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '部门id',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `is_admin` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否后台管理员 1 是  0   否',
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系地址',
-  `describe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT ' 描述信息',
-  `last_login_ip` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '最后登录ip',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '联系地址',
+  `describe` varchar(255) NOT NULL DEFAULT '' COMMENT ' 描述信息',
+  `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
@@ -667,18 +929,18 @@ CREATE TABLE `sys_user` (
   UNIQUE KEY `user_login` (`user_name`,`deleted_at`) USING BTREE,
   UNIQUE KEY `mobile` (`mobile`,`deleted_at`) USING BTREE,
   KEY `user_nickname` (`user_nickname`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '13578342363', '超级管理员', '0', 'c567ae329f9929b518759d3bea13f492', 'f9aZTAa8yz', '1', 'yxh669@qq.com', '1', 'https://yxh-1301841944.cos.ap-chongqing.myqcloud.com/gfast/2021-07-19/ccwpeuqz1i2s769hua.jpeg', '101', '', '1', 'asdasfdsaf大发放打发士大夫发按时', '描述信息', '::1', '2023-12-12 08:38:18', '2021-06-22 17:58:00', '2022-11-03 15:44:38', null);
-INSERT INTO `sys_user` VALUES ('31', 'demo', '15334455789', '演示账号', '0', '6dd68eea81e0fca319add0bd58c3fdf6', '46PvWe1Sl7', '1', '123@qq.com', '2', 'https://p.qqan.com/up/2020-6/2020061117234279854.jpg', '109', '3', '1', '云南省曲靖市22223', '生活变的再糟糕，也不妨碍我变得更好', '::1', '2023-12-12 08:56:28', '2021-06-22 17:58:00', '2023-12-12 10:13:26', null);
-INSERT INTO `sys_user` VALUES ('43', '10001', '18800000001', '张飞', '0', '86c8b432832755a8a1a30b37abd7b350', 'GbDcSwi5pP', '1', '', '0', 'https://p.qqan.com/up/2021-1/20211411391666.jpg', '100', '', '1', '', '', '127.0.0.1', '2023-12-11 18:03:41', '2023-12-11 15:57:22', '2023-12-11 15:59:43', null);
-INSERT INTO `sys_user` VALUES ('44', '10002', '18800000002', '赵云', '0', '9bb19a3a6ac101c4b756f6254d75ae52', 'z7ApNfLD7b', '1', '', '0', 'https://p.qqan.com/up/2020-11/20201127157109035.jpg', '100', '', '1', '', '', '', null, '2023-12-11 16:31:52', '2023-12-11 16:31:52', null);
-INSERT INTO `sys_user` VALUES ('45', '10003', '18800000003', '关羽', '0', 'b2a9a7a50facd629d661c0fc816bd123', '70CfL5HdbE', '1', '', '0', 'https://p.qqan.com/up/2021-1/2021122135507881.jpg', '100', '', '1', '', '', '', null, '2023-12-11 16:32:23', '2023-12-11 16:32:23', null);
-INSERT INTO `sys_user` VALUES ('46', '10004', '18800000004', '曹操', '0', '31d80dd5b6c9c9f5c421f03695331694', '7LFc54F7yz', '1', '', '0', 'https://im.file.raingad.com/avatar/1/654783148796c.png', '100', '', '1', '', '', '', null, '2023-12-11 16:32:49', '2023-12-11 16:32:49', null);
-INSERT INTO `sys_user` VALUES ('47', '10005', '18800000005', '孙权', '0', '970373c1046cade51cda5c167c37d1f0', 'bL4TSPf4aS', '1', '', '0', 'https://im.file.raingad.com/avatar/2/656af34e2c199.gif', '100', '', '1', '', '', '', null, '2023-12-11 16:33:36', '2023-12-11 16:33:36', null);
+INSERT INTO `sys_user` VALUES ('1', 'admin', '13578342363', '超级管理员', '0', 'd84217993c0538e6e9caeca6236ecdf7', 'ndBNTGhEAX', '1', 'yxh669@qq.com', '1', 'upload_file/avatar/01.jpeg', '101', '', '1', 'asdasfdsaf大发放打发士大夫发按时', '描述信息', '::1', '2024-02-06 14:31:41', '2021-06-22 17:58:00', '2024-02-04 09:19:47', null);
+INSERT INTO `sys_user` VALUES ('31', 'demo', '15334455789', '演示账号', '0', '6dd68eea81e0fca319add0bd58c3fdf6', '46PvWe1Sl7', '1', '123@qq.com', '2', 'upload_file/avatar/02.jpeg', '109', '3', '1', '云南省曲靖市22223', '生活变的再糟糕，也不妨碍我变得更好', '127.0.0.1', '2024-02-06 14:40:56', '2021-06-22 17:58:00', '2023-12-12 10:13:26', null);
+INSERT INTO `sys_user` VALUES ('43', '10001', '18800000001', '张飞', '0', '86c8b432832755a8a1a30b37abd7b350', 'GbDcSwi5pP', '1', '', '0', 'upload_file/avatar/03.jpeg', '100', '', '1', '', '', '127.0.0.1', '2023-12-11 18:03:41', '2023-12-11 15:57:22', '2023-12-11 15:59:43', null);
+INSERT INTO `sys_user` VALUES ('44', '10002', '18800000002', '赵云', '0', '9bb19a3a6ac101c4b756f6254d75ae52', 'z7ApNfLD7b', '1', '', '0', 'upload_file/avatar/04.jpeg', '100', '', '1', '', '', '', null, '2023-12-11 16:31:52', '2023-12-11 16:31:52', null);
+INSERT INTO `sys_user` VALUES ('45', '10003', '18800000003', '关羽', '0', 'b2a9a7a50facd629d661c0fc816bd123', '70CfL5HdbE', '1', '', '0', 'upload_file/avatar/05.jpeg', '100', '', '1', '', '', '', null, '2023-12-11 16:32:23', '2023-12-11 16:32:23', null);
+INSERT INTO `sys_user` VALUES ('46', '10004', '18800000004', '曹操', '0', '31d80dd5b6c9c9f5c421f03695331694', '7LFc54F7yz', '1', '', '0', 'upload_file/avatar/06.jpeg', '100', '', '1', '', '', '', null, '2023-12-11 16:32:49', '2023-12-11 16:32:49', null);
+INSERT INTO `sys_user` VALUES ('47', '10005', '18800000005', '孙权', '0', '970373c1046cade51cda5c167c37d1f0', 'bL4TSPf4aS', '1', '', '0', 'upload_file/avatar/07.jpeg', '100', '', '1', '', '', '', null, '2023-12-11 16:33:36', '2023-12-11 16:33:36', null);
 
 -- ----------------------------
 -- Table structure for sys_user_online
@@ -689,13 +951,13 @@ CREATE TABLE `sys_user_online` (
   `uuid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' COMMENT '用户标识',
   `token` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '' COMMENT '用户token',
   `create_time` datetime DEFAULT NULL COMMENT '登录时间',
-  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-  `ip` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '登录ip',
-  `explorer` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '浏览器',
-  `os` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作系统',
+  `user_name` varchar(255) NOT NULL COMMENT '用户名',
+  `ip` varchar(120) NOT NULL DEFAULT '' COMMENT '登录ip',
+  `explorer` varchar(30) NOT NULL DEFAULT '' COMMENT '浏览器',
+  `os` varchar(30) NOT NULL DEFAULT '' COMMENT '操作系统',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uni_token` (`token`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='用户在线状态表';
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户在线状态表';
 
 -- ----------------------------
 -- Records of sys_user_online
@@ -706,6 +968,15 @@ INSERT INTO `sys_user_online` VALUES ('23', '1bc953f97bfc49bd2c1e8454ee66f930', 
 INSERT INTO `sys_user_online` VALUES ('24', '13eae77b38cfc62bbe0ba153c3554755', '7ZUSfVIf2HyYjcv86SKPPs29v003ECPEScsdYsYYqO3oQ4U2J4GO9GjSn7dcDNHU/fDkF0UuaY/4zxwJggcjvmcSp00Y62dkuvj4T2TanokC3hDv+dky6tKZSHbsyHpDj/L8xSVce3zHg9X1ve+jzg==', '2023-12-11 18:04:07', 'demo', '::1', 'Chrome', 'Windows 10');
 INSERT INTO `sys_user_online` VALUES ('25', 'e3988e311d2fe6d59f4bc59e526e08d7', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkRdI3L4RWTfSEVwwgX3sK5/k7qaR7SDwVipVyygsJk2M2IWEvyy9V1ageJdYj1WWudUzTn9I71pTgc/RlqL1oN+sbucvwJwll+Y4JQZVeOikTg==', '2023-12-12 08:38:18', 'admin', '::1', 'Chrome', 'Windows 10');
 INSERT INTO `sys_user_online` VALUES ('26', '097bf7369c3624a8ff302d898297643f', '7ZUSfVIf2HyYjcv86SKPPs29v003ECPEScsdYsYYqO3oQ4U2J4GO9GjSn7dcDNHU/fDkF0UuaY/4zxwJggcjvirjAGvS2nnPbRDRQHEingM+YSwJGUUV4+oasS5xIF55W0tZJuS4EdxGyfvdhW9VCw==', '2023-12-12 08:56:28', 'demo', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('27', '6f18c07547dff8440ff33e39bb8f61f6', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkRdI3L4RWTfSEVwwgX3sK5/k7qaR7SDwVipVyygsJk2M2LKcS63Vs3f07IS5jLHlKoweDK3fRV6PV+WY+HvEP0PAmmTeM3A6rU4JcPewmcIt2g==', '2024-02-04 09:18:46', 'admin', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('28', '19a4589c9995ba6cbcfa961cfe298f1b', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkReIjdcSFqNnoKGvBsV4C9paZD7i4xvI/WNbIWok8FRVaEcLdTK1mKVOSQv8QXtbsTX1/WrTpti+6p638yHySZZJUIIwk1xWj/NqeAvq/n5ylw==', '2024-02-04 09:20:54', 'admin', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('29', '4232d02378ab8b595c4581a0ee682442', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkReIjdcSFqNnoKGvBsV4C9paZD7i4xvI/WNbIWok8FRVaA+GU5YRJBTnozo87d+Pnz6wRiW7nEG27dl6fBICz2B7h1Ik/PNu1i3lAfnFpbQanQ==', '2024-02-04 10:12:33', 'admin', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('30', '7ffa54c26e620db90a7e8ef4dca3a705', '7ZUSfVIf2HyYjcv86SKPPs29v003ECPEScsdYsYYqO0kFeGUBvtVuEzt7N0pZMMWYq1cEs7pPQs5GX+RGRVyvQpnCXxld3oUAnSklDOK4UD9GqSR1D4ix+P9hVl6AmkuKgJBo3EGzNShm2Qt6vy/bA==', '2024-02-05 09:00:44', 'demo', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('31', '02c30ec9d5cc121cbfd3cb7963e3ca8c', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkRfF8LRaN7n+dqJ5ZIrfDQK4Gza9I6V8BlYidrcsjn9B/D/uwTO5pyt+kkzJ8w/Bv/3Jn/bOUWxs990P2TiqQ42KkRmiHo+vaidouZXHr2Lmnw==', '2024-02-05 09:19:45', 'admin', '127.0.0.1', 'Firefox', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('32', 'fb2f55a4dce26819713a1aae2ec43814', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkReIjdcSFqNnoKGvBsV4C9paZD7i4xvI/WNbIWok8FRVaH7knD9sXeVABJqCky39Lxx0XlevSu+iZ2rqNRw2VaIA/C/sinaFjMC1xEjJeJhT6g==', '2024-02-05 15:43:52', 'admin', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('33', 'cdc1e2b6e32d8702e4020749146e2ebc', '7ZUSfVIf2HyYjcv86SKPPs29v003ECPEScsdYsYYqO1zHbsr/ct9sQhbIsrvrhKbxNkBXz4hoUuvPrdDzfRwag3Iq3oAoPUEQCTl/++ukIEKursN3SUOoNqWSBzyJ2Yqu485+1sg3HP2NV70OViOtQ==', '2024-02-05 18:01:12', 'demo', '127.0.0.1', 'Firefox', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('34', '4a6a6ce26326370688c9eac53d6d8e62', '5rrLCPtzPM4tnvlHq+0iav2BDmIrd9QCru7zhgXMkReIjdcSFqNnoKGvBsV4C9paZD7i4xvI/WNbIWok8FRVaBKjFuD4/dSkXW1bxEoVpnjw4TOA7ZH69d/niXdh9PMIS+vXOSxefuB3J2DP0f/gUQ==', '2024-02-06 14:31:41', 'admin', '::1', 'Chrome', 'Windows 10');
+INSERT INTO `sys_user_online` VALUES ('35', '8539c7f47ba1c0e210579f0c7e078f5d', '7ZUSfVIf2HyYjcv86SKPPs29v003ECPEScsdYsYYqO1zHbsr/ct9sQhbIsrvrhKbxNkBXz4hoUuvPrdDzfRwavWEe9HkTa0R/eYEXJj6zH9SPsEvO1Y7Eys0rQJDs/F7Jp2+G6oNdJCWR9jZZY3LdQ==', '2024-02-06 14:40:56', 'demo', '127.0.0.1', 'Firefox', 'Windows 10');
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -715,7 +986,7 @@ CREATE TABLE `sys_user_post` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `post_id` bigint(20) NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`user_id`,`post_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPACT COMMENT='用户与岗位关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户与岗位关联表';
 
 -- ----------------------------
 -- Records of sys_user_post
