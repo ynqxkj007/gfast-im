@@ -1,0 +1,15 @@
+[ req ]
+default_bits        = 1024
+distinguished_name  = req_distinguished_name
+req_extensions      = san
+extensions          = san
+[ req_distinguished_name ]
+countryName         = CN
+stateOrProvinceName = Definesys
+localityName        = Definesys
+organizationName    = Definesys
+[SAN]
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = DNS:ga.g-fast.cn
