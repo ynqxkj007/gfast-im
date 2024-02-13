@@ -17,6 +17,7 @@ const (
 	MsgTypeMemberJoin        // 群成员加入
 	MsgTypeMemberQuit        // 群成员退出
 	MsgTypeRoomInform        // 群聊通知
+	MsgTypeInitVideo         // 发起视频通话
 )
 
 // 消息格式
@@ -177,6 +178,19 @@ func NewErrorMessage(content string) *Message {
 		Type:    MsgTypeError,
 		Content: content,
 		MsgTime: MyCustomTime(utils.NewUtils().Now()),
+	}
+}
+
+// 发起视频通话连接
+func NewInitVideoConn(user *User, ids []UID, payload interface{}) *Message {
+	b, _ := json.Marshal(payload)
+	return &Message{
+		User:    user,
+		Type:    MsgTypeInitVideo,
+		CType:   CTypeJson,
+		Content: string(b),
+		MsgTime: MyCustomTime(utils.NewUtils().Now()),
+		Ats:     ids,
 	}
 }
 

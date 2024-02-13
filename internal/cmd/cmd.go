@@ -22,10 +22,13 @@ var (
 			g.Log().SetFlags(glog.F_ASYNC | glog.F_TIME_DATE | glog.F_TIME_TIME | glog.F_FILE_LONG)
 			g.Log().Info(ctx, gbase64.MustDecodeString(consts.Logo), "Version:", consts.Version)
 			s := g.Server()
+			// 开启https
+			// s.EnableHTTPS("./keys/private.crt", "./keys/private.key")
 			//上传的文件允许跨域请求
 			s.BindHookHandler("/upload_file/*", ghttp.HookBeforeServe, func(r *ghttp.Request) {
 				r.Response.CORSDefault()
 			})
+
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				router.R.BindController(ctx, group)
 			})

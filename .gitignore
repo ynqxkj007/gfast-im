@@ -30,3 +30,4 @@ GFastV3
 /manifest/config/db.yaml
 /gfv3-im-server
 /*.bat
+/keys

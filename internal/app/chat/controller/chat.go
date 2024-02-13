@@ -100,11 +100,11 @@ func initializeSignaling() {
 			return info.ID != userId
 		})
 
-		err := sh.Write(signalingLogic.NewInform("成功加入聊天室").Byte())
+		err := sh.Write(signalingLogic.NewInform(fmt.Sprintf("用户:%s, 加入聊天室:%s", userId, roomId)).Byte())
 		if err != nil {
 			g.Log().Info(ctx, "sh.Write err:", err)
 		}
-		g.Log().Info(ctx, fmt.Sprintf("用户:%s加入聊天室", userId))
+		g.Log().Info(ctx, fmt.Sprintf("用户:%s, 加入聊天室:%s", userId, roomId))
 
 	})
 
@@ -225,6 +225,15 @@ func (c *chatController) SignalingWs(ctx context.Context, req *chat.SignalingWsR
 
 // 向目标发起音视频连接
 func (c *chatController) InitVideo(ctx context.Context, req *chat.InitVideoReq) (res *chat.InitVideoRes, err error) {
+	notifyUserIds := make([]chartLogic.UID, 0, len(req.To))
+	for _, item := range req.To {
+		notifyUserIds = append(notifyUserIds, chartLogic.UID(item))
+	}
+	u := ChatRoom.Hub.GetUser(chartLogic.UID(req.From))
+
+	if !u.IsEmpty() {
+		ChatRoom.Hub.Broadcast(chartLogic.NewInitVideoConn(&u, notifyUserIds, map[string]interface{}{"roomId": req.RoomId}))
+	}
 
 	return
 }
