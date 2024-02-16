@@ -50,9 +50,54 @@
 9.  用户获取历史聊天记录
 10. 用户在线状态及离线状态的显示
 11. 自动断线重连
+12. 一对一视频聊天
 12. 其他功能还在不断的完善中...
 
 
+## 本地部署时需要注意的事项
+
+假如需要测试一对一视频聊天功能，必须开启https才能正常使用，开启方法如下:
+
+1、本地自行创建自签名证书,生成应用证书和应用证书私钥,可参考:[https://blog.51cto.com/u_343067/6476405](https://blog.51cto.com/u_343067/6476405)
+
+2、后台前端的vite.config.ts配置代理示例如下:
+```js
+{
+	server: {
+		https: {
+			key: fs.readFileSync('keys/private.key'),		// 这里填您生成的应用证书私钥
+			cert: fs.readFileSync('keys/private.crt')       // 这里填您生成的应用证书
+		},
+		host: '0.0.0.0',
+		port: env.VITE_PORT,
+		open: JSON.parse(env.VITE_OPEN),
+		hmr: true,
+		proxy: {
+			'/apix': {								// .env.development中的 VITE_API_URL 
+				target: 'http://192.168.0.1:8808', // 目标服务器地址和端口
+				ws: true,
+				changeOrigin: true, // 是否改变源地址
+				rewrite: (path) => path.replace(/^\/apix/, '') // 重写路径，移除 /apix 前缀
+			}
+		}
+	} 
+}
+```
+
+3、演示站点并未架设Coturn服务器, 因此公网环境下的2台主机之间的视频连接有可能会失败（比如需要建立连接的一台主机位于对称型NAT设备的后面）,如有需要请自行架设Coturn服务器, 架设完毕后可在后台前端的src/stores/signaling.ts文件的createRTC方法中进行设置。
+
+```js
+const pc = new RTCPeerConnection({
+	// 可以传入多个stun服务器或者turn服务器
+	iceServers: [
+		{ url: 'stun:stun.l.google.com:19302' },
+		{ url: 'stun:stun1.l.google.com:19302' },
+		{ url: 'stun:stun2.l.google.com:19302' },
+		{ url: 'stun:stun3.l.google.com:19302' },
+		{ url: 'stun:stun4.l.google.com:19302' }
+	]
+})
+```
 
 ## 演示地址
 [http://ga.g-fast.cn/syscenter](http://ga.g-fast.cn/syscenter)
