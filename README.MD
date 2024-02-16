@@ -100,7 +100,7 @@ const pc = new RTCPeerConnection({
 ```
 
 ## 演示地址
-[http://ga.g-fast.cn/syscenter](http://ga.g-fast.cn/syscenter)
+[https://ga.g-fast.cn/syscenter](https://ga.g-fast.cn/syscenter)
 账号：demo  密码：123456
 ## 配置
 项目数据库文件 `resource/data/gfast-v32-roomchat.sql` 创建数据库导入后修改配置 `manifest/config/config.yaml.bak` 复制改为`manifest/config/config.yaml`  
