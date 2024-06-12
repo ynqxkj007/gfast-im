@@ -39,10 +39,12 @@ func (o *offlineProcessor) Send(user *User) {
 	if r, ok := o.userRing[user.UID]; ok {
 		r.Do(func(value any) {
 			if value != nil {
-				err := user.Write(value.(*Message))
-				if err != nil {
-					g.Log().Info(context.TODO(), err.Error())
-				}
+				user.Each(func(item *User) {
+					err := item.Write(value.(*Message))
+					if err != nil {
+						g.Log().Info(context.TODO(), err.Error())
+					}
+				})
 			}
 		})
 
