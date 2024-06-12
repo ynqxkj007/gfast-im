@@ -103,9 +103,9 @@ func (s *Spadger) HandleRequestWithKeys(w http.ResponseWriter, r *http.Request, 
 		user.Payload = keys
 	}
 	s.connectHandler(user)
-	if !user.open {
-		return nil
-	}
+	//if !user.open {
+	//	return nil
+	//}
 	s.Hub.Broadcast(NewUserEnterMessage(user))
 	s.Hub.UserEntering(user)
 	go user.SendMessage()

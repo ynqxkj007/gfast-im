@@ -37,11 +37,28 @@ func (b *Broadcaster) Start() {
 	for {
 		select {
 		case user := <-b.enteringChannel:
-			b.users[user.UID] = user
-			// 获取离线消息
+			//b.users[user.UID] = user
+			//// 获取离线消息
+			//b.offlineProcessor.Send(user)
+			if u, ok := b.users[user.UID]; ok {
+				u.Add(user)
+				user = u
+			} else {
+				b.users[user.UID] = user
+			}
 			b.offlineProcessor.Send(user)
 		case user := <-b.leavingChannel:
-			delete(b.users, user.UID)
+			//if u, ok := b.users[user.UID]; ok && u == user {
+			//	delete(b.users, user.UID)
+			//}
+			if u, ok := b.users[user.UID]; ok {
+				ret := u.Remove(func(item *User) bool {
+					return item == user
+				})
+				if ret == nil {
+					delete(b.users, user.UID)
+				}
+			}
 		case msg := <-b.messageChannel:
 			if len(msg.Ats) > 0 {
 				for _, uid := range msg.Ats {
@@ -49,10 +66,17 @@ func (b *Broadcaster) Start() {
 						continue
 					}
 					if user, ok := b.users[uid]; ok {
-						err := user.Write(msg)
-						if err != nil {
-							g.Log().Info(context.TODO(), err.Error())
-						}
+						//err := user.Write(msg)
+						//if err != nil {
+						//	g.Log().Info(context.TODO(), err.Error())
+						//}
+						user.Each(func(item *User) {
+							err := item.Write(msg)
+							if err != nil {
+								g.Log().Info(context.TODO(), err.Error())
+							}
+						})
+
 					} else {
 						b.offlineProcessor.save(uid, msg)
 					}
@@ -63,10 +87,16 @@ func (b *Broadcaster) Start() {
 						continue
 					}
 					if msg.Filter(user) {
-						err := user.Write(msg)
-						if err != nil {
-							g.Log().Info(context.TODO(), err.Error())
-						}
+						//err := user.Write(msg)
+						//if err != nil {
+						//	g.Log().Info(context.TODO(), err.Error())
+						//}
+						user.Each(func(item *User) {
+							err := item.Write(msg)
+							if err != nil {
+								g.Log().Info(context.TODO(), err.Error())
+							}
+						})
 					}
 				}
 			} else {
@@ -74,10 +104,16 @@ func (b *Broadcaster) Start() {
 					if user.UID == msg.User.UID {
 						continue
 					}
-					err := user.Write(msg)
-					if err != nil {
-						g.Log().Info(context.TODO(), err.Error())
-					}
+					//err := user.Write(msg)
+					//if err != nil {
+					//	g.Log().Info(context.TODO(), err.Error())
+					//}
+					user.Each(func(item *User) {
+						err := item.Write(msg)
+						if err != nil {
+							g.Log().Info(context.TODO(), err.Error())
+						}
+					})
 				}
 			}
 		case uid := <-b.hasUserChannel:

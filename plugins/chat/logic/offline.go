@@ -42,7 +42,6 @@ func (o *offlineProcessor) Send(user *User) {
 				err := user.Write(value.(*Message))
 				if err != nil {
 					g.Log().Info(context.TODO(), err.Error())
-
 				}
 			}
 		})

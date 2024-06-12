@@ -27,6 +27,59 @@ type User struct {
 	conn           *websocket.Conn        `json:"-"`
 	messageChannel chan *Message          `json:"-"`
 	spadger        *Spadger               `json:"-"`
+	next           *User                  `json:"-"`
+}
+
+func (u *User) ExistNext() bool {
+	return u.next != nil
+}
+
+func (u *User) Add(other *User) {
+	if u.next == nil {
+		u.next = other
+	} else {
+		u.next.Add(other)
+	}
+}
+
+func (u *User) Remove(fn func(*User) bool) *User {
+	u.RemoveNext(fn)
+	if fn(u) {
+		return u.next
+	} else {
+		return u
+	}
+}
+
+func (u *User) RemoveNext(fn func(*User) bool) {
+	if u.next == nil {
+		return
+	}
+	if fn(u.next) {
+		u.next = u.next.next
+	}
+	if u.next != nil {
+		u.next.RemoveNext(fn)
+	}
+}
+
+func (u *User) Find(fn func(*User) bool) *User {
+	if fn(u) {
+		return u
+	} else {
+		if u.next != nil {
+			return u.next.Find(fn)
+		} else {
+			return nil
+		}
+	}
+}
+
+func (u *User) Each(fn func(*User)) {
+	fn(u)
+	if u.next != nil {
+		u.next.Each(fn)
+	}
 }
 
 func (u *User) UIDToUint64() uint64 {
