@@ -51,6 +51,8 @@ func (b *Broadcaster) Start() {
 				})
 				if ret == nil {
 					delete(b.users, user.UID)
+				} else {
+					b.users[user.UID] = ret
 				}
 			}
 		case msg := <-b.messageChannel:
